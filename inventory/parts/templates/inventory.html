@@ -1,11 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Inventory</title>
-</head>
-<body>
-<p1>test</p1>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block body %}
+
+<br>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Part Number</th>
+        <th>Description</th>
+        <th>Location</th>
+        <th>Supplier</th>
+        <th>S.O.H</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    {% for part in parts %}
+
+    <tr>
+        <td>{{ part.pk }}</td>
+        <td>{{ part.partnumber }}</td>
+        <td>{{ part.description }}</td>
+        <td>{{ part.location }}</td>
+        <td>{{ part.supplier }}</td>
+        <td>{{ part.stockonhand }}</td>
+
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
+{% endblock %}
