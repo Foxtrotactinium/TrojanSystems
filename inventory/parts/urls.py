@@ -3,4 +3,5 @@ from .views import *
 
 urlpatterns = [
     path('inventory/', inventory_list, name='inventory'), # URL path for inventory_list view
+#    path('detail/', detail_view, name='detail'),
     ]

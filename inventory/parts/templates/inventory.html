@@ -19,7 +19,7 @@
 
     {% for part in parts %}
 
-    <tr>
+    <tr class='clickable-row' data-href="{% url 'detail' part.pk %}">
         <td>{{ part.pk }}</td>
         <td>{{ part.partnumber }}</td>
         <td>{{ part.description }}</td>
