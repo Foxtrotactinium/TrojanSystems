@@ -19,14 +19,13 @@
 
     {% for part in parts %}
 
-    <tr class='clickable-row' data-href="{% url 'detail' part.pk %}">
+    <tr> <!-- class='clickable-row' data-href="{% url 'inventory' part.pk %}">-->
         <td>{{ part.pk }}</td>
         <td>{{ part.partnumber }}</td>
         <td>{{ part.description }}</td>
         <td>{{ part.location }}</td>
         <td>{{ part.supplier }}</td>
         <td>{{ part.stockonhand }}</td>
-
     </tr>
 
     {% endfor %}
