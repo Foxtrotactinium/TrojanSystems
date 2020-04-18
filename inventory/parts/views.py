@@ -15,7 +15,7 @@ def inventory_list(request):
     return HttpResponse(template.render(context, request))
 
 
-def detail_view(request, pk, model, cls):
+"""def detail_view(request, pk, model, cls):
     item = get_object_or_404(model, pk=pk)
     template = loader.get_template('detail.html')
 
@@ -29,7 +29,17 @@ def detail_view(request, pk, model, cls):
         form = cls(instance=item)
 
         return HttpResponse(template.render({'form': form}, request))
+"""
 
+def part_information(request, partnumber):
+    """This view returns part information to view and edit"""
+
+    selected_part = partslist.objects.get(partnumber)
+    # user is posting: get edited node, change comment, and save
+    """if request.POST:"""
+
+    # render template with nodes
+    return render(request, 'detail', {'selected_part': selected_part })
 
 def index(request):
     parts = partslist.objects.all()

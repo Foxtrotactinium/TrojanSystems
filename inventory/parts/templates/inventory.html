@@ -19,7 +19,7 @@
 
     {% for part in parts %}
 
-    <tr>
+    <tr><a href="/detail/{{ partslist.partnumber }}/">{{ partslist.partnumber }}</a>
         <td>{{ part.pk }}</td>
         <td>{{ part.partnumber }}</td>
         <td>{{ part.description }}</td>
