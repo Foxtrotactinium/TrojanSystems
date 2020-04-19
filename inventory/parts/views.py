@@ -37,7 +37,7 @@ def part_information(request, partnumber):
     selected_part = partslist.objects.get(partnumber)
     # user is posting: get edited node, change comment, and save
     """if request.POST:"""
-
+    print(selected_part)
     # render template with nodes
     return render(request, 'detail', {'selected_part': selected_part })
 
