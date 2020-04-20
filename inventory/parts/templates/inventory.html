@@ -21,7 +21,7 @@
     <!-- need to make these table rows link to their respective parts
     class="table_row" href="{{ selected_part.partnumber }}/detail">{{ selected_part.partnumber }}-->
 
-    <tr>
+    <tr data-href="{% url 'detail' part.pk %}">
         <td>{{ part.pk }}</td>
         <td>{{ part.partnumber }}</td>
         <td>{{ part.description }}</td>

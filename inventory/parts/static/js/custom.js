@@ -1,3 +1,3 @@
-$("#container").on('table_row.bs.table', function (e, row, $element) {
-    window.location = $element.data('href');
+$('tr[data-href]').on("click", function() {
+    document.location = $(this).data('href');
 });

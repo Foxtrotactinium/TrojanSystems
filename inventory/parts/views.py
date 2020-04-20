@@ -31,15 +31,16 @@ def inventory_list(request):
         return HttpResponse(template.render({'form': form}, request))
 """
 
-def part_information(request, partnumber):
+def part_information(request):
     """This view returns part information to view and edit"""
 
-    selected_part = partslist.objects.get(partnumber)
-    # user is posting: get edited node, change comment, and save
-    """if request.POST:"""
-    print(selected_part)
+
+    template = loader.get_template('detail.html')
+    context = {
+        'pk': pk,
+    }
     # render template with nodes
-    return render(request, 'detail', {'selected_part': selected_part })
+    return HttpResponse(template.render(context, request))
 
 def index(request):
     parts = partslist.objects.all()
