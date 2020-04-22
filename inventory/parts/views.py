@@ -31,10 +31,10 @@ def inventory_list(request):
         return HttpResponse(template.render({'form': form}, request))
 """
 
-def part_information(request, pk):
+def part_information(request, partnumber):
     """This view returns part information to view and edit"""
 
-    part = get_object_or_404(partslist, pk=pk)
+    part = get_object_or_404(partslist, partnumber=partnumber)
     template = loader.get_template('detail.html')
     context = {
         'part': part,
