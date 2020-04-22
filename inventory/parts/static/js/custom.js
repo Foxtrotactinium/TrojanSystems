@@ -1,3 +1,6 @@
-$('tr[data-href]').on("click", function() {
-    document.location = $(this).data('href');
-});
+    $(document).ready(function(){
+      $('table tr').click(function(){
+        window.location = $(this).data('href');
+        return false;
+      });
+    });
