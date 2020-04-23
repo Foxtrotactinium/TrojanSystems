@@ -45,8 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'parts',
     'import_export',
-    'django_static_jquery',
-
+#    'django_static_jquery',
 ]
 
 MIDDLEWARE = [

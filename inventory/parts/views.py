@@ -31,16 +31,25 @@ def inventory_list(request):
         return HttpResponse(template.render({'form': form}, request))
 """
 
-def part_information(request, partnumber):
-    """This view returns part information to view and edit"""
-
-    part = get_object_or_404(partslist, partnumber=partnumber)
+def part_information(request):
+    rid = request.path[1:len(request.path)-1]
+    part = partslist.objects.get(id=rid)
     template = loader.get_template('detail.html')
     context = {
         'part': part,
     }
-    # render template with nodes
     return HttpResponse(template.render(context, request))
+
+# def part_information(request, partnumber):
+#     """This view returns part information to view and edit"""
+#     print(request.path)
+#     part = get_object_or_404(partslist, partnumber=partnumber)
+#     template = loader.get_template('detail.html')
+#     context = {
+#         'part': part,
+#     }
+#     # render template with nodes
+#     return HttpResponse(template.render(context, request))
 
 def index(request):
     parts = partslist.objects.all()
