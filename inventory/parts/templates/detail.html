@@ -6,19 +6,36 @@
     <form method="POST">
         <br>
         {% csrf_token %}
-
-    {% for field in form %}
-    <div class="form-group row">
-        <label form="id_{{ field.name }}" class="col-2 col-form-label"> {{ fields.label }}</label>
-        <div class="col-10">
-            {{ field }}
+        <div class="form-row">
+            <div class="col-8">
+                <label for="PartNumberInput">Part Number</label>
+                <input class="form-control" id="PartNumberInput" placeholder="{{ part.partnumber }}" type="text">
+            </div>
+            <div class="col-4">
+                <label for="LocationInput">Location</label>
+                <input type="text" class="form-control" id="LocationInput" placeholder="{{ part.location }}">
+            </div>
         </div>
-    </div>
-        {% endfor %}
+        <div class="form-group">
+            <label for="DescriptionInput">Description</label>
+            <input type="text" class="form-control" id="DescriptionInput" placeholder="{{ part.description }}">
+        </div>
+    </form>
 
-        <button type="submit" class="btn btn-primary" name="button">Add Device</button>
+<!--    {% for field in form %}-->
+<!--    <div class="form-group row">-->
+<!--        <br>-->
+<!--        <br>-->
+<!--        <label form="{{ part.partnumber }}" class="col-2 col-form-label"> {{ part.partnumber }}</label>-->
+<!--        <div class="col-10">-->
+<!--            {{ field }}-->
+<!--        </div>-->
+<!--    </div>-->
+<!--        {% endfor %}-->
+<br>
+        <button type="submit" class="btn btn-primary" name="editbutton">Edit</button>
 
     </form>
 </div>
---->
+
 {% endblock %}
