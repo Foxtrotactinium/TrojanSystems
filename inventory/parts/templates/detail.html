@@ -6,21 +6,36 @@
     <form method="POST">
         <br>
         {% csrf_token %}
+        {% for fields in form %}
         <div class="form-row">
             <div class="col-8">
-                <label for="PartNumberInput">Part Number</label>
-                <input class="form-control" id="PartNumberInput" placeholder="{{ part.partnumber }}" type="text">
+                <label for="{{ fields.partnumber }}input">Part Number</label>
+                <input class="form-control" id="{{ fields.partnumber }}input" placeholder="{{ part.partnumber }}" type="text">
             </div>
             <div class="col-4">
-                <label for="LocationInput">Location</label>
-                <input type="text" class="form-control" id="LocationInput" placeholder="{{ part.location }}">
+                <label for="{{ fields.location }}input">Location</label>
+                <input type="text" class="form-control" id="{{ fields.location }}input" placeholder="{{ part.location }}">
             </div>
         </div>
+
         <div class="form-group">
-            <label for="DescriptionInput">Description</label>
-            <input type="text" class="form-control" id="DescriptionInput" placeholder="{{ part.description }}">
+            <label for="{{ fields.description }}input">Description</label>
+            <input type="text" class="form-control" id="{{ fields.description }}input" placeholder="{{ part.description }}">
         </div>
-    </form>
+
+        <div class="form-row">
+            <div class="col-8">
+                <label for="{{ fields.supplier }}input">Supplier</label>
+                <input class="form-control" id="{{ fields.supplier }}input" placeholder="{{ part.supplier }}" type="text">
+            </div>
+            <div class="col-4">
+                <label for="{{ fields.stockonhand }}input">Stock on Hand</label>
+                <input type="text" class="form-control" id="{{ fields.stockonhand }}input" placeholder="{{ part.stockonhand }}">
+            </div>
+        </div>
+        {% endfor %}
+
+
 
 <!--    {% for field in form %}-->
 <!--    <div class="form-group row">-->
@@ -33,7 +48,7 @@
 <!--    </div>-->
 <!--        {% endfor %}-->
 <br>
-        <button type="submit" class="btn btn-primary" name="editbutton">Edit</button>
+        <button type="submit" class="btn btn-primary" name="savebutton">Save</button>
 
     </form>
 </div>

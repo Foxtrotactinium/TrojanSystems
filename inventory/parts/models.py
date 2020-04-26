@@ -14,6 +14,8 @@ class partslist(models.Model):
     leadtime = models.CharField(max_length=50)
     weight = models.IntegerField(blank=True)
 
+    # class Meta:
+    #     abstract = True
 # dunder used to return string value without conflicting with other variables
     def __str__(self):
         return 'Part : {0} Description {1} Location : {2} Supplier : {3} S.O.H : {4}'.format(self.partnumber, self.description, self.location, self.supplier, self.stockonhand)

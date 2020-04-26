@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.http import HttpResponse
 from django.template import loader
+from .forms import *
 
 
 # Create your views here.
@@ -44,18 +45,35 @@ def inventory_list(request):
 #     return HttpResponse(template.render(context, request))
 
 
+def part_edit(request, partnumber, model, cls): #, part_form
+    part = get_object_or_404(model, partnumber=partnumber)
+    print(part)
+
+    if request.method == "POST":
+        form = cls(request.POST, instance=part)
+        if form.is_valid():
+            form.save()
+            return redirect('inventory')
+
+    else:
+        form = cls(instance=part)
+        # print(form, ' attributes of part object ')
+        return render(request, 'detail.html', {'form': form})
+
 def part_information(request, partnumber):
-    """This view returns part information to view and edit"""
-    print('value parsed ', partnumber)
-    """"Import chosen part in table row from partslist"""
-    part = get_object_or_404(partslist, partnumber=partnumber)
-    print(part, ' AND ', part.description)
-    template = loader.get_template('detail.html')
-    context = {
-        'part': part,
-    }
-    # render template with nodes
-    return HttpResponse(template.render(context, request))
+    return part_edit(request, partnumber, partslist, part_form)
+
+    # """This view returns part information to view and edit"""
+    # print('value parsed ', partnumber)
+    # """"Import chosen part in table row from partslist"""
+    # part = get_object_or_404(partslist, partnumber=partnumber)
+    # # print(part, ' AND ', HttpRequest.GET)
+    # template = loader.get_template('detail.html')
+    # context = {
+    #     'part': part,
+    # }
+    # # render template with nodes
+    # return HttpResponse(template.render(context, request))
 
 def index(request):
     parts = partslist.objects.all()
