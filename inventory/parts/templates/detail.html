@@ -1,39 +1,42 @@
 {% extends 'base.html'%}
 
+{% load crispy_forms_tags %}
+
 {% block body%}
 
 <div class="container">
     <form method="POST">
         <br>
         {% csrf_token %}
-        {% for fields in form %}
-        <div class="form-row">
-            <div class="col-8">
-                <label for="{{ fields.partnumber }}input">Part Number</label>
-                <input class="form-control" id="{{ fields.partnumber }}input" placeholder="{{ part.partnumber }}" type="text">
-            </div>
-            <div class="col-4">
-                <label for="{{ fields.location }}input">Location</label>
-                <input type="text" class="form-control" id="{{ fields.location }}input" placeholder="{{ part.location }}">
-            </div>
-        </div>
+        {% crispy form %}
 
-        <div class="form-group">
-            <label for="{{ fields.description }}input">Description</label>
-            <input type="text" class="form-control" id="{{ fields.description }}input" placeholder="{{ part.description }}">
-        </div>
+<!--        <div class="form-row">-->
+<!--            <div class="col-8">-->
+<!--                <label for="{{ form.partnumber }}input">Part Number</label>-->
+<!--                <input class="form-control" id="{{ form.partnumber }}input" placeholder="{{ form.partnumber }}" type="text">-->
+<!--            </div>-->
+<!--            <div class="col-4">-->
+<!--                <label for="{{ form.location }}input">Location</label>-->
+<!--                <input type="text" class="form-control" id="{{ form.location }}input" placeholder="{{ form.location }}">-->
+<!--            </div>-->
+<!--        </div>-->
 
-        <div class="form-row">
-            <div class="col-8">
-                <label for="{{ fields.supplier }}input">Supplier</label>
-                <input class="form-control" id="{{ fields.supplier }}input" placeholder="{{ part.supplier }}" type="text">
-            </div>
-            <div class="col-4">
-                <label for="{{ fields.stockonhand }}input">Stock on Hand</label>
-                <input type="text" class="form-control" id="{{ fields.stockonhand }}input" placeholder="{{ part.stockonhand }}">
-            </div>
-        </div>
-        {% endfor %}
+<!--        <div class="form-group">-->
+<!--            <label for="{{ form.description }}input">Description</label>-->
+<!--            <input type="text" class="form-control" id="{{ form.description }}input" placeholder="{{ form.description }}">-->
+<!--        </div>-->
+
+<!--        <div class="form-row">-->
+<!--            <div class="col-8">-->
+<!--                <label for="{{ form.supplier }}input">Supplier</label>-->
+<!--                <input class="form-control" id="{{ form.supplier }}input" placeholder="{{ form.supplier }}" type="text">-->
+<!--            </div>-->
+<!--            <div class="col-4">-->
+<!--                <label for="{{ form.stockonhand }}input">Stock on Hand</label>-->
+<!--                <input type="text" class="form-control" id="{{ form.stockonhand }}input" placeholder="{{ form.stockonhand }}">-->
+<!--            </div>-->
+<!--        </div>-->
+
 
 
 

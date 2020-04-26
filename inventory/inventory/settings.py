@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'parts',
     'import_export',
+    'crispy_forms',
 #    'django_static_jquery',
 ]
 

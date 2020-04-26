@@ -45,23 +45,25 @@ def inventory_list(request):
 #     return HttpResponse(template.render(context, request))
 
 
-def part_edit(request, partnumber, model, cls): #, part_form
-    part = get_object_or_404(model, partnumber=partnumber)
+def part_information(request, partnumber): #, part_form
+    part = get_object_or_404(partslist, partnumber=partnumber)
     print(part)
 
     if request.method == "POST":
-        form = cls(request.POST, instance=part)
+        form = part_form(request.POST, instance=part)
         if form.is_valid():
             form.save()
             return redirect('inventory')
 
     else:
-        form = cls(instance=part)
+        form = part_form(instance=part)
+        print(form)
+        print(part_form)
+        print(part)
+        print(form.as_ul())
         # print(form, ' attributes of part object ')
         return render(request, 'detail.html', {'form': form})
 
-def part_information(request, partnumber):
-    return part_edit(request, partnumber, partslist, part_form)
 
     # """This view returns part information to view and edit"""
     # print('value parsed ', partnumber)
