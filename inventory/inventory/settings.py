@@ -46,7 +46,8 @@ INSTALLED_APPS = [
     'parts',
     'import_export',
     'crispy_forms',
-#    'django_static_jquery',
+    # 'work_orders',
+
 ]
 
 MIDDLEWARE = [
