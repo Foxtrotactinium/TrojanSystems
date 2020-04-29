@@ -14,8 +14,7 @@ class jobs(models.Model):
         ArrayField(
             models.ForeignKey(partslist, on_delete=models.CASCADE)
         )
-    instruction =
 
-    class Meta:
-        processdescription = models.CharField()
-
+class instruction(models.Model):
+    job = models.ForeignKey(jobs)
+    pdf = models.FileField(upload_to='pdf')
