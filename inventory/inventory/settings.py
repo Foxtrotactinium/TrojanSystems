@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'parts',
     'import_export',
     'crispy_forms',
-    # 'work_orders',
+    'work_orders',
 
 ]
 

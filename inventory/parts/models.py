@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Inventory Model with fields
 class partslist(models.Model):
     partnumber = models.CharField(max_length=50, blank=False)
@@ -16,7 +17,10 @@ class partslist(models.Model):
 
     # class Meta:
     #     abstract = True
-# dunder used to return string value without conflicting with other variables
+    # dunder used to return string value without conflicting with other variables
     def __str__(self):
-        return 'Part : {0} Description {1} Location : {2} Supplier : {3} S.O.H : {4}'.format(self.partnumber, self.description, self.location, self.supplier, self.stockonhand)
-
+        return 'Part : {0} Description {1} Location : {2} Supplier : {3} S.O.H : {4}'.format(self.partnumber,
+                                                                                             self.description,
+                                                                                             self.location,
+                                                                                             self.supplier,
+                                                                                             self.stockonhand)

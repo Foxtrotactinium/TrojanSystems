@@ -15,6 +15,7 @@ def inventory_list(request):
     }
     return HttpResponse(template.render(context, request))
 
+
 def part_information(request, partnumber):
     part = get_object_or_404(partslist, partnumber=partnumber)
 
@@ -32,6 +33,7 @@ def part_information(request, partnumber):
         # print(form, ' attributes of part object ')
         return render(request, 'detail.html', {'form': form})
 
+
 def new_part(request):
     if request.method == "POST":
         form = part_form(request.POST)
@@ -44,6 +46,7 @@ def new_part(request):
         form = part_form()
         print(form)
         return render(request, 'new.html', {'form': form})
+
 
 def index(request):
     parts = partslist.objects.all()
