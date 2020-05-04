@@ -32,7 +32,7 @@ def job_information(request, jobid):
         print(job_form)
         print(task)
         # print(form, ' attributes of part object ')
-        return render(request, 'detail.html', {'form': form})
+        return render(request, 'activities.html', {'form': form})
 
 # # use for getting all files in instruction model relating to job from jobs model
 # some_manual = Manual.objects.get(id=1)
