@@ -20,7 +20,8 @@
 
     {% for task in tasks %}
 
-    <tr data-href="{% url 'detail' work_orders.jobs %}">
+<!--    <tr data-href="{% url 'detail' work_orders.jobs %}">-->
+    <tr>
         <td>{{ task.jobid }}</td>
         <td>{{ task.partsrequired }}</td>
         <td>{{ task.partsproduced }}</td>

@@ -6,10 +6,20 @@ from parts.models import partslist
 # Create your models here.
 class jobs(models.Model):
     jobid = models.CharField(max_length=100)
-    partsrequired = models.ManyToManyField(partslist, related_name='required_for_jobs')
-    partsproduced = models.ManyToManyField(partslist, related_name='produced_for_jobs')
 
+    def __str__(self):
+        return self.jobid
+
+class required(models.Model):
+    reqid = models.ForeignKey(jobs, on_delete=models.CASCADE)
+    partsrequired = models.ManyToManyField(partslist, related_name='required_for_jobs')
+    quantityrequired = models.IntegerField(default=1)
+
+class produced(models.Model):
+    prodid = models.ForeignKey(jobs, on_delete=models.CASCADE)
+    partsproduced = models.ManyToManyField(partslist, related_name='produced_for_jobs')
+    quantityproduced = models.IntegerField(default=1)
 
 # class instruction(models.Model):
-#     job = models.ForeignKey(jobs)
+#     job = models.ForeignKey(jobs, on_delete=models.CASCADE)
 #     pdf = models.FileField(upload_to='pdf')
