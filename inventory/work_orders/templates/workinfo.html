@@ -5,10 +5,11 @@
 {% block body%}
 
 <div class="container">
-    <form method="POST">
+    <form action="{% url 'activities' %}" class="uniForm" method="post">
         <br>
         {% csrf_token %}
         {% crispy form %}
+        {% crispy job_form job_form.helper %}
     </form>
 </div>
 

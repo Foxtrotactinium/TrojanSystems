@@ -38,6 +38,7 @@ class required_form(forms.ModelForm):
         self.helper.form_id = 'id-required_form'
         self.helper.form_method = 'post'
         self.helper.form_action = 'submit_survey'
+        self.helper.form_tag = False
 
         # You can dynamically adjust your layout
         self.helper.add_input(Submit('save', 'Save'))
