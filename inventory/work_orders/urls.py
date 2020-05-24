@@ -1,5 +1,5 @@
 from django.urls import path
-from work_orders.views import *
+from work_orders.views import activity_list, job_information
 
 urlpatterns = [
     path('', activity_list, name='activities'),  # URL path for inventory_list view

@@ -12,7 +12,7 @@ class jobs(models.Model):
 
 class required(models.Model):
     reqid = models.ForeignKey(jobs, on_delete=models.CASCADE)
-    partsrequired = models.ManyToManyField(partslist, related_name='required_for_jobs')
+    partsrequired = models.ForeignKey(partslist, related_name='required_for_jobs', on_delete=models.CASCADE)
     quantityrequired = models.IntegerField(default=1)
 
 class produced(models.Model):

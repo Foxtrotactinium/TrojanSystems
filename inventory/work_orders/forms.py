@@ -1,5 +1,5 @@
 from django import forms
-from .models import *
+from .models import jobs, required
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
@@ -8,9 +8,9 @@ from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 #
 
 
-class job_form(forms.ModelForm):
+class JobForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(job_form, self).__init__(*args, **kwargs)
+        super(JobForm, self).__init__(*args, **kwargs)
 
         # If you pass FormHelper constructor a form instance
         # It builds a default layout with all its fields
@@ -28,9 +28,9 @@ class job_form(forms.ModelForm):
         model = jobs
         fields = '__all__'
 
-class required_form(forms.ModelForm):
+class RequiredForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(required_form, self).__init__(*args, **kwargs)
+        super(RequiredForm, self).__init__(*args, **kwargs)
 
         # If you pass FormHelper constructor a form instance
         # It builds a default layout with all its fields

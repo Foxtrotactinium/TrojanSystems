@@ -8,8 +8,8 @@
     <form action="{% url 'activities' %}" class="uniForm" method="post">
         <br>
         {% csrf_token %}
-        {% crispy form %}
-        {% crispy job_form job_form.helper %}
+        {% crispy jobForm jobForm.helper %}
+        {% crispy requiredForm requiredForm.helper %}
     </form>
 </div>
 

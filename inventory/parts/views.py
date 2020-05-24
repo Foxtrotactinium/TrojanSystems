@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
 from django.http import HttpResponse
 from django.template import loader
-from .forms import *
+from .forms import part_form
 
 
 # Create your views here.
@@ -31,7 +31,7 @@ def part_information(request, partnumber):
         print(part_form)
         print(part)
         # print(form, ' attributes of part object ')
-        return render(request, 'detail.html', {'form': form})
+        return render(request, 'detail.html', {'partForm': form})
 
 
 def new_part(request):
