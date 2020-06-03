@@ -8,6 +8,14 @@ from .forms import part_form
 # Create your views here.
 def inventory_list(request):
     parts = partslist.objects.all()
+    partsuppliers_list = partsuppliers.objects.all()
+    for part in parts:
+        allsuppliers = partsuppliers_list.filter(partnumber=part.id)
+        if( allsuppliers.count() > 1 ):
+            part.supplier = allsuppliers.get_object_or_404(preferrd=True)
+        else:
+            part.supplier = allsuppliers.first()
+        # part.supplier = part.supplier.partsupplier
     template = loader.get_template('inventory.html')
     context = {
         'parts': parts,
@@ -16,9 +24,15 @@ def inventory_list(request):
     return HttpResponse(template.render(context, request))
 
 
-def part_information(request, partnumber):
-    part = get_object_or_404(partslist, partnumber=partnumber)
-
+def part_information(request, id):
+    part = get_object_or_404(partslist, id=id)
+    # allparts = partslist.objects.all()
+    # part = allparts.filter(pk=id)
+    # print(part)
+    # supplier_list = partsuppliers.objects.all()
+    # part.supplier = supplier_list.filter(partnumber=part[0])
+    # print(part.supplier)
+    # print(part)
     if request.method == "POST":
         form = part_form(request.POST, instance=part)
         if form.is_valid():
