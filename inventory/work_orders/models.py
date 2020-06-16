@@ -16,13 +16,11 @@ class required(models.Model):
     reqid = models.ForeignKey(jobs, on_delete=models.CASCADE)
     partsrequired = models.ForeignKey(partslist, related_name='required_for_jobs', on_delete=models.CASCADE)
     quantityrequired = models.IntegerField(default=1)
+    # TRUE/FALSE used to represent parts required/produced
     increment = models.BooleanField(default=False)
 
-
-# class produced(models.Model):
-#     prodid = models.ForeignKey(jobs, on_delete=models.CASCADE)
-#     partsproduced = models.ForeignKey(partslist, related_name='produced_for_jobs', on_delete=models.CASCADE)
-#     quantityproduced = models.IntegerField(default=1)
+    def __str__(self):
+        return str(self.reqid)+" "+str(self.partsrequired)
 
 # class instruction(models.Model):
 #     job = models.ForeignKey(jobs, on_delete=models.CASCADE)

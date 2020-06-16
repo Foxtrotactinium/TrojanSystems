@@ -8,13 +8,9 @@
     <form method="POST">
         <br>
         {% csrf_token %}
-        {% for required in required_instance %}
-    <tr>
-        <td>{{ required }}</td>
-    </tr>
-    {% endfor %}
-        {% crispy form2 form2.helper %}
+        {% crispy supplierform %}
     </form>
+
 </div>
 
 {% endblock %}

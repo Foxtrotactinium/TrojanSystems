@@ -12,4 +12,29 @@
     </form>
 </div>
 
+<br>
+
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th>Supplier</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    {% for supplier in suppliers %}
+    <!-- need to make these table rows link to their respective parts
+    class="table_row" href="{{ selected_part.partnumber }}/detail">{{ selected_part.partnumber }}-->
+
+    <tr>
+        <td>{{ supplier }}</td>
+    </tr>
+
+    {% endfor %}
+
+    </tbody>
+
+</table>
+
 {% endblock %}

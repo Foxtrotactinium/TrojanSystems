@@ -1,8 +1,8 @@
 from django.urls import path
-from work_orders.views import activity_list, job_information
+from work_orders.views import activity_list, job_information, add_required_part
 
 urlpatterns = [
     path('', activity_list, name='activities'),  # URL path for inventory_list view
     path('<str:jobid>/', job_information, name='workinfo'),
-    # path('inventory/new/', new_part, name='new'),
+    path('<str:jobid>/addrequired', add_required_part, name='addrequired'),
 ]
