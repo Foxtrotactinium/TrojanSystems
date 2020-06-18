@@ -13,9 +13,6 @@ class partslist(models.Model):
     leadtime = models.CharField(max_length=50)
     weight = models.IntegerField(blank=True)
 
-    # class Meta:
-    #     abstract = True
-    # dunder used to return string value without conflicting with other variables
     def __str__(self):
         return 'Part : {0} ' \
                'Description : {1} ' \
@@ -36,6 +33,7 @@ class suppliers(models.Model):
     def __str__(self):
         return self.supplier
 
+# lookup for many to many relationship between parts and suppliers
 class partsuppliers(models.Model):
     partsupplier = models.ForeignKey(suppliers, on_delete=models.CASCADE)
     partnumber = models.ForeignKey(partslist, on_delete=models.CASCADE)
@@ -43,8 +41,4 @@ class partsuppliers(models.Model):
 
     def __str__(self):
         return str(self.partsupplier)
-#
-# class users(models.Model):
-#
-#
-# class activities_log(models.Model):
+

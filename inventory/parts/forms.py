@@ -16,7 +16,6 @@ class part_form(forms.ModelForm):
 
         # You can dynamically adjust your layout
         self.helper.layout.append(Submit('save', 'save'))
-        # self.helper.layout = Layout(FieldWithButtons('partnumber', StrictButton("Go!")))
 
     class Meta:
         model = partslist
@@ -32,7 +31,6 @@ class supplier_form(forms.ModelForm):
 
         # You can dynamically adjust your layout
         self.helper.layout.append(Submit('save', 'save'))
-        # self.helper.layout = Layout(FieldWithButtons('partnumber', StrictButton("Go!")))
 
     class Meta:
         model = suppliers
