@@ -1,15 +1,44 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block body %}
+<script>
+    function inventorySearch() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("searchBar");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("inventoryTable");
+  tr = table.getElementsByTagName("tr");
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+</script>
 
 <br>
+<form class="form-inline my-2 my-lg-0">
+  <input class="form-control mr-sm-2" type="text" id="searchBar" onkeyup="inventorySearch()" placeholder="Search" aria-label="Search">
+</form>
+
+<br>
+
 <div class="container-fluid">
       <a href="{% url 'new' %}" class="btn btn-secondary btn-sm btn-pad" role="button">New Item</a>
 </div>
 
 <br>
 
-<table class="table table-hover">
+<table class="table table-hover" id="inventoryTable">
     <thead>
     <tr>
         <th>Part Number</th>
@@ -23,8 +52,6 @@
     <tbody>
 
     {% for part in parts %}
-    <!-- need to make these table rows link to their respective parts
-    class="table_row" href="{{ selected_part.partnumber }}/detail">{{ selected_part.partnumber }}-->
 
     <tr data-href="{% url 'detail' part.id %}">
         <td>{{ part.partnumber }}</td>
