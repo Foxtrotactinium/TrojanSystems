@@ -16,13 +16,14 @@
 <div class="row justify-content-between">
     <div class="col-8">
         <table class="table table-hover">
-
             <tbody>
             {% for required_instance in required %}
-    <tr>
-        <td>{{ required_instance }}</td>
-    </tr>
-    {% endfor %}
+            <tr>
+                <td>{{ required_instance.partsrequired.partnumber }}</td>
+                <td>{{ required_instance.partsrequired.description }}</td>
+                <td>{{ required_instance.quantityrequired }}</td>
+            </tr>
+            {% endfor %}
             </tbody>
         </table>
         <a href="{% url 'addrequired' jobid=jobid %}" class="btn btn-secondary btn-sm btn-pad" role="button">New Item</a>
