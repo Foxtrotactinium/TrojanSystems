@@ -2,20 +2,31 @@
 
 {% load crispy_forms_tags %}
 
-{% block body%}
+{% block body %}
 
-<div class="container">
-    <form action="{% url 'activities' %}" class="uniForm" method="post">
+<div class="container-fluid">
+    <form method="POST">
         <br>
         {% csrf_token %}
-        {% crispy jobForm jobForm.helper %}
-        {% for required in required_instance %}
+        {% crispy jobForm %}
+    </form>
+</div>
+
+<br>
+<div class="row justify-content-between">
+    <div class="col-8">
+        <table class="table table-hover">
+
+            <tbody>
+            {% for required_instance in required %}
     <tr>
-        <td>{{ required }}</td>
+        <td>{{ required_instance }}</td>
     </tr>
     {% endfor %}
+            </tbody>
+        </table>
         <a href="{% url 'addrequired' jobid=jobid %}" class="btn btn-secondary btn-sm btn-pad" role="button">New Item</a>
-    </form>
+    </div>
 </div>
 
 {% endblock %}

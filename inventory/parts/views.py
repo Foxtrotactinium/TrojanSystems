@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
-from django.http import HttpResponse
-from django.template import loader
 from .forms import part_form, supplier_form
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
@@ -11,30 +9,24 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 # Create your views here.
 def inventory_list(request):
     parts = partslist.objects.all()
-    partsuppliers_list = partsuppliers.objects.all()
-
     for part in parts:
-        allsuppliers = partsuppliers_list.filter(partnumber=part.id)
+        allsuppliers = partsuppliers.objects.all().filter(partnumber=part.id)
         if allsuppliers.count() > 1:
-            part.supplier = allsuppliers.get_object_or_404(preferrd=True)
+            part.supplier = allsuppliers.get_object_or_404(preferred=True)
 
         else:
             part.supplier = allsuppliers.first()
 
-    template = loader.get_template('inventory.html')
     context = {
         'parts': parts,
         'header': 'Inventory'
     }
-    return HttpResponse(template.render(context, request))
+    return render(request, 'inventory.html', context)
 
 
 def part_information(request, id):
-    allparts = partslist.objects.all()
-    part = allparts.filter(pk=id).first()
-
-    supplier_list = partsuppliers.objects.all()
-    specific_suppliers = supplier_list.filter(partnumber=part)
+    part = partslist.objects.all().filter(pk=id).first()
+    part_suppliers = partsuppliers.objects.all().filter(partnumber=part)
 
     if request.method == "POST":
         form = part_form(request.POST, instance=part)
@@ -44,7 +36,8 @@ def part_information(request, id):
 
     else:
         form = part_form(instance=part)
-        return render(request, 'detail.html', {'partForm': form, 'suppliers': specific_suppliers})
+        return render(request, 'detail.html', {'partForm': form,
+                                               'suppliers': part_suppliers})
 
 
 def add_supplier(request):
@@ -57,7 +50,7 @@ def add_supplier(request):
 
     else:
         form = supplier_form()
-        return render(request, 'supplier.html', {'form': form})
+        return render(request, 'supplier.html', {'SupplierForm': form})
 
 
 def new_part(request):
@@ -70,17 +63,7 @@ def new_part(request):
 
     else:
         form = part_form()
-        print(form)
-        return render(request, 'new.html', {'form': form})
-
-
-def index(request):
-    parts = partslist.objects.all()
-    template = loader.get_template('index.html')
-    context = {
-        'parts': parts,
-    }
-    return HttpResponse(template.render(context, request))
+        return render(request, 'new.html', {'PartForm': form})
 
 
 def register(request):
@@ -122,345 +105,6 @@ def login_request(request):
     if request.method == 'POST':
         login_form = AuthenticationForm(request=request, data=request.POST)
         if login_form.is_valid():
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             username = login_form.cleaned_data.get('username')
             password = login_form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)

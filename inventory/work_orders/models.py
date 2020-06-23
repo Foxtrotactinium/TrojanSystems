@@ -16,8 +16,7 @@ class required(models.Model):
     reqid = models.ForeignKey(jobs, on_delete=models.CASCADE)
     partsrequired = models.ForeignKey(partslist, related_name='required_for_jobs', on_delete=models.CASCADE)
     quantityrequired = models.IntegerField(default=1)
-    # TRUE/FALSE used to represent parts required/produced
-    increment = models.BooleanField(default=False)
+    increment = models.BooleanField(default=False)     # TRUE/FALSE used to represent parts required/produced
 
     def __str__(self):
         return str(self.reqid)+" "+str(self.partsrequired)

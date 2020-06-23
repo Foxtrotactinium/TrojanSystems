@@ -3,19 +3,26 @@
 {% load crispy_forms_tags %}
 
 {% block body%}
+<div class="row justify-content-between">
+    <div class="col-8">
+        <table class="table table-hover">
+            <tbody>
+            {% for required_instance in required %}
+            <tr>
+                <td>{{ required_instance }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <div class="container">
     <form method="POST">
         <br>
         {% csrf_token %}
-        {% for required in required_instance %}
-    <tr>
-        <td>{{ required }}</td>
-    </tr>
-    {% endfor %}
-        {% crispy form2 form2.helper %}
+        {% crispy RequiredPartForm %}
     </form>
-
 </div>
 
 {% endblock %}
