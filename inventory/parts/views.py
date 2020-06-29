@@ -23,6 +23,14 @@ def inventory_list(request):
     }
     return render(request, 'inventory.html', context)
 
+def supplier_list(request):
+    partsuppliers = suppliers.objects.all()
+
+    context = {
+        'header': 'Supplier List',
+        'partsuppliers': partsuppliers,
+    }
+    return render(request, 'suppliers.html', context)
 
 def part_information(request, id):
     part = partslist.objects.all().filter(pk=id).first()
@@ -39,6 +47,18 @@ def part_information(request, id):
         return render(request, 'detail.html', {'partForm': form,
                                                'suppliers': part_suppliers})
 
+def supplier_information(request, id):
+    partsupplier = suppliers.objects.all().filter(pk=id).first()
+
+    if request.method == "POST":
+        form = supplier_form(request.POST, instance=partsupplier)
+        if form.is_valid():
+            form.save()
+            return redirect('suppliers')
+
+    else:
+        form = supplier_form(instance=partsupplier)
+        return render(request, 'supplier.html', {'supplierForm': form})
 
 def add_supplier(request):
     if request.method == "POST":

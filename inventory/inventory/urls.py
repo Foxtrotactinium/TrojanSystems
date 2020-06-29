@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from parts.views import register, logout_request, login_request
+from parts.views import register, logout_request, login_request, supplier_list, supplier_information
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("suppliers/", supplier_list, name="suppliers"),
+    path('suppliers/<str:id>/', supplier_information, name='supplier_information'),
     path('inventory/', include('parts.urls')),  # includes URLS's from parts app for hygiene
     path('activities/', include('work_orders.urls')),
     path("register/", register, name="register.html"),
