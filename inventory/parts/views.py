@@ -49,6 +49,7 @@ def part_information(request, id):
 
 def supplier_information(request, id):
     partsupplier = suppliers.objects.all().filter(pk=id).first()
+    supplierparts = partsuppliers.objects.all().filter(partsupplier=id)
 
     if request.method == "POST":
         form = supplier_form(request.POST, instance=partsupplier)
@@ -58,7 +59,8 @@ def supplier_information(request, id):
 
     else:
         form = supplier_form(instance=partsupplier)
-        return render(request, 'supplier.html', {'supplierForm': form})
+        return render(request, 'supplier.html', {'supplierForm': form,
+                                                 'supplierparts': supplierparts})
 
 def add_supplier(request):
     if request.method == "POST":

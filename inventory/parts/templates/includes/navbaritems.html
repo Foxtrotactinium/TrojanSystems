@@ -1,9 +1,12 @@
 <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Inventory</a>
+        <a class="nav-link" href="{% url 'inventory' %}" tabindex="-1">Inventory</a>
       </li>
-      <li class="nav-item active">
-        <a class="nav-link" href="{% url 'inventory' %}">Home <span class="sr-only">(current)</span></a>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'suppliers' %}">Suppliers</a>
+      </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'activities' %}">Activities</a>
       </li>
         {% if user.is_authenticated %}
             <li class="nav-item">
