@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
-from .forms import part_form, supplier_form
+from .forms import part_form, supplier_form, part_comment_form
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -35,17 +35,29 @@ def supplier_list(request):
 def part_information(request, id):
     part = partslist.objects.all().filter(pk=id).first()
     part_suppliers = partsuppliers.objects.all().filter(partnumber=part)
+    part_comments = partComments.objects.all().filter(commentedpart=part)
 
     if request.method == "POST":
-        form = part_form(request.POST, instance=part)
-        if form.is_valid():
-            form.save()
-            return redirect('inventory')
+        if 'save' in request.POST:
+            form = part_form(request.POST, instance=part)
+            if form.is_valid():
+                form.save()
+                return redirect('inventory')
+
+        elif 'addcomment' in request.POST:
+            form = part_comment_form(request.POST, instance=part_comments)
+            print(form)
+            if form.is_valid():
+                form.save()
+                return redirect('inventory')
 
     else:
-        form = part_form(instance=part)
-        return render(request, 'detail.html', {'partForm': form,
-                                               'suppliers': part_suppliers})
+        form1 = part_form(instance=part)
+        form2 = part_comment_form(request.POST, instance=part)
+        return render(request, 'detail.html', {'partForm': form1,
+                                               'commentForm': form2,
+                                               'suppliers': part_suppliers,
+                                               'comments': part_comments})
 
 def supplier_information(request, id):
     partsupplier = suppliers.objects.all().filter(pk=id).first()

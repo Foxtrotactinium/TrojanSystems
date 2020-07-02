@@ -42,3 +42,12 @@ class partsuppliers(models.Model):
     def __str__(self):
         return str(self.partsupplier)
 
+
+class partComments(models.Model):
+    commentedpart = models.ForeignKey(partslist, on_delete=models.PROTECT)
+    commenttime = models.DateTimeField(auto_now_add=True, blank=True)
+    commentuser = models.ForeignKey('auth.User', on_delete=models.PROTECT)
+    partcomment = models.TextField()
+
+    def __str__(self):
+        return str(self.partcomment)

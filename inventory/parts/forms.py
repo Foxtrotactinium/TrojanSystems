@@ -1,8 +1,10 @@
 from django import forms
-from .models import partslist, suppliers
+from .models import partslist, suppliers, partComments
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Div, Submit, HTML, Button, Row, Column, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
+
+
 #
 
 
@@ -39,7 +41,7 @@ class part_form(forms.ModelForm):
                     css_class='col-md-6'
                 ),
                 Column(
-                    Field('weight',  css_class='form-control mb-0'),
+                    Field('weight', css_class='form-control mb-0'),
                     css_class='col-md-6'
                 ),
                 css_class='form-row form_group'
@@ -51,6 +53,7 @@ class part_form(forms.ModelForm):
     class Meta:
         model = partslist
         fields = '__all__'
+
 
 class supplier_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -69,4 +72,21 @@ class supplier_form(forms.ModelForm):
 
     class Meta:
         model = suppliers
+        fields = '__all__'
+
+
+class part_comment_form(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(part_comment_form, self).__init__(*args, **kwargs)
+
+        # If you pass FormHelper constructor a form instance
+        # It builds a default layout with all its fields
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Field('partcomment', css_class='form-control', rows="2"),
+            Submit('addcomment', 'Add Comment')
+        )
+
+    class Meta:
+        model = partComments
         fields = '__all__'
