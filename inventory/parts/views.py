@@ -23,18 +23,18 @@ def inventory_list(request):
     }
     return render(request, 'inventory.html', context)
 
+
 def supplier_list(request):
-    partsuppliers = suppliers.objects.all()
 
     context = {
         'header': 'Supplier List',
-        'partsuppliers': partsuppliers,
+        'partsuppliers': suppliers.objects.all(),
     }
     return render(request, 'suppliers.html', context)
 
+
 def part_information(request, id):
     part = partslist.objects.all().filter(pk=id).first()
-    part_suppliers = partsuppliers.objects.all().filter(partnumber=part)
     part_comments = partComments.objects.all().filter(commentedpart=part)
 
     if request.method == "POST":
@@ -46,22 +46,21 @@ def part_information(request, id):
 
         elif 'addcomment' in request.POST:
             form = part_comment_form(request.POST, instance=part_comments)
-            print(form)
             if form.is_valid():
                 form.save()
                 return redirect('inventory')
 
     else:
-        form1 = part_form(instance=part)
-        form2 = part_comment_form(request.POST, instance=part)
-        return render(request, 'detail.html', {'partForm': form1,
-                                               'commentForm': form2,
-                                               'suppliers': part_suppliers,
+
+        return render(request, 'detail.html', {'part': part,
+                                               'partForm': part_form(instance=part),
+                                               'commentForm': part_comment_form(request.POST, instance=part),
+                                               'suppliers': partsuppliers.objects.all().filter(partnumber=part),
                                                'comments': part_comments})
+
 
 def supplier_information(request, id):
     partsupplier = suppliers.objects.all().filter(pk=id).first()
-    supplierparts = partsuppliers.objects.all().filter(partsupplier=id)
 
     if request.method == "POST":
         form = supplier_form(request.POST, instance=partsupplier)
@@ -70,9 +69,9 @@ def supplier_information(request, id):
             return redirect('suppliers')
 
     else:
-        form = supplier_form(instance=partsupplier)
-        return render(request, 'supplier.html', {'supplierForm': form,
-                                                 'supplierparts': supplierparts})
+        return render(request, 'supplier.html', {'supplierForm': supplier_form(instance=partsupplier),
+                                                 'supplierparts': partsuppliers.objects.all().filter(partsupplier=id)})
+
 
 def add_supplier(request):
     if request.method == "POST":
