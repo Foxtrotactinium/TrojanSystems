@@ -25,6 +25,11 @@ class partcommentsresource(resources.ModelResource):
     class Meta:
         model = partComments
 
+
+# class partcommentsdmin(admin.ModelAdmin):
+#     list_display = ('timestamp', 'author', 'part', 'comments')
+#     readonly_fields = ('timestamp',)
+
 class importparts(ImportExportModelAdmin):
     resource_class = partsresource
 
@@ -38,3 +43,4 @@ admin.site.register(jobs)
 admin.site.register(suppliers)
 admin.site.register(partsuppliers)
 admin.site.register(required)
+admin.site.register(partComments)

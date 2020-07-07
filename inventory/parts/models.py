@@ -40,8 +40,14 @@ class partsuppliers(models.Model):
     partnumber = models.ForeignKey(partslist, on_delete=models.CASCADE)
     preferred = models.BooleanField(default=False)
 
-# class part_comments(models.Model):
-#     timestamp = models.DateTimeField(auto_now_add=True)
-#     author = models.ForeignKey(User, on_delete=models.PROTECT)
-#     part = models.ForeignKey(partslist, on_delete=models.PROTECT)
-#     comment = models.TextField()
+    def __str__(self):
+        return str(self.partsupplier)
+
+class partComments(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    part = models.ForeignKey(partslist, on_delete=models.PROTECT)
+    comment = models.TextField()
+
+    def __str__(self):
+        return str(self.comment)+str(self.timestamp)
