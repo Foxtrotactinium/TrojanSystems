@@ -7,21 +7,13 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm">
-            <br>
             <form method="POST">
+                <br>
                 {% csrf_token %}
                 {% crispy partForm %}
             </form>
-            <br>
-            <form method="POST">
-                {% crispy commentForm %}
-            </form>
         </div>
         <div class="col-sm">
-            <div class="container-fluid">
-                <a href="{% url 'supplier' part.id %}" class="btn btn-secondary btn-sm btn-pad" role="button">New Supplier</a>
-            </div>
-            <br>
         <table class="table table-hover">
             <thead>
             <tr>
@@ -30,7 +22,7 @@
             </thead>
             <tbody>
             {% for supplier in suppliers %}
-            <tr data-href="{% url 'supplier_information' supplier.partsupplier.id %}">
+            <tr data-href="{% url 'supplier_information' suppliers.partsuppliers.id %}">
                 <td>{{ supplier }}</td>
             </tr>
             {% endfor %}

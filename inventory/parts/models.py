@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 # Inventory Model with fields
@@ -39,15 +40,8 @@ class partsuppliers(models.Model):
     partnumber = models.ForeignKey(partslist, on_delete=models.CASCADE)
     preferred = models.BooleanField(default=False)
 
-    def __str__(self):
-        return str(self.partsupplier)
-
-
-class partComments(models.Model):
-    commentedpart = models.ForeignKey(partslist, on_delete=models.CASCADE)
-    commenttime = models.DateTimeField(auto_now_add=True, blank=True)
-    commentuser = models.ForeignKey('auth.User', on_delete=models.CASCADE)
-    partcomment = models.TextField()
-
-    def __str__(self):
-        return str(self.commentedpart)
+# class part_comments(models.Model):
+#     timestamp = models.DateTimeField(auto_now_add=True)
+#     author = models.ForeignKey(User, on_delete=models.PROTECT)
+#     part = models.ForeignKey(partslist, on_delete=models.PROTECT)
+#     comment = models.TextField()

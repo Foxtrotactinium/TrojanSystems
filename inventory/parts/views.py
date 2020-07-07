@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import *
-from .forms import part_form, supplier_form, part_comment_form
+from .forms import part_form, supplier_form
 from django.contrib import messages
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -23,44 +23,35 @@ def inventory_list(request):
     }
     return render(request, 'inventory.html', context)
 
-
 def supplier_list(request):
+    partsuppliers = suppliers.objects.all()
 
     context = {
         'header': 'Supplier List',
-        'partsuppliers': suppliers.objects.all(),
+        'partsuppliers': partsuppliers,
     }
     return render(request, 'suppliers.html', context)
 
-
 def part_information(request, id):
     part = partslist.objects.all().filter(pk=id).first()
-    part_comments = partComments.objects.all().filter(commentedpart=part)
+    part_suppliers = partsuppliers.objects.all().filter(partnumber=part.id)
+    # part_comment = part_comments.objects.all().filter(part=part)
 
     if request.method == "POST":
-        if 'save' in request.POST:
-            form = part_form(request.POST, instance=part)
-            if form.is_valid():
-                form.save()
-                return redirect('inventory')
-
-        elif 'addcomment' in request.POST:
-            form = part_comment_form(request.POST, instance=part_comments)
-            if form.is_valid():
-                form.save()
-                return redirect('inventory')
+        form = part_form(request.POST, instance=part)
+        if form.is_valid():
+            form.save()
+            return redirect('inventory')
 
     else:
-
-        return render(request, 'detail.html', {'part': part,
-                                               'partForm': part_form(instance=part),
-                                               'commentForm': part_comment_form(request.POST, instance=part),
-                                               'suppliers': partsuppliers.objects.all().filter(partnumber=part),
-                                               'comments': part_comments})
-
+        form = part_form(instance=part)
+        return render(request, 'detail.html', {'partForm': form,
+                                               'suppliers': part_suppliers,
+                                               })
 
 def supplier_information(request, id):
     partsupplier = suppliers.objects.all().filter(pk=id).first()
+    supplierparts = partsuppliers.objects.all().filter(partsupplier=id)
 
     if request.method == "POST":
         form = supplier_form(request.POST, instance=partsupplier)
@@ -69,9 +60,9 @@ def supplier_information(request, id):
             return redirect('suppliers')
 
     else:
-        return render(request, 'supplier.html', {'supplierForm': supplier_form(instance=partsupplier),
-                                                 'supplierparts': partsuppliers.objects.all().filter(partsupplier=id)})
-
+        form = supplier_form(instance=partsupplier)
+        return render(request, 'supplier.html', {'supplierForm': form,
+                                                 'supplierparts': supplierparts})
 
 def add_supplier(request):
     if request.method == "POST":

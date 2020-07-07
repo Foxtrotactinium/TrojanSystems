@@ -11,9 +11,11 @@ class job_form(forms.ModelForm):
         # If you pass FormHelper constructor a form instance
         # It builds a default layout with all its fields
         self.helper = FormHelper(self)
-
-        # You can dynamically adjust your layout
-        self.helper.layout.append(Submit('save', 'save'))
+        self.helper.layout = Layout(
+            Field('jobid', css_class='form-control'),
+            Field('description', css_class='form-control'),
+            Submit('save', 'Save')
+        )
 
     class Meta:
         model = jobs
