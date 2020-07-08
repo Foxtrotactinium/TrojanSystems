@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block body%}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm">
+            <form method="POST">
+                <br>
+                {% csrf_token %}
+                {% crispy activityForm %}
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

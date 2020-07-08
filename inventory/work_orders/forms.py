@@ -23,19 +23,21 @@ class job_form(forms.ModelForm):
 
 class required_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        jobid = kwargs.pop('reqid')
         super(required_form, self).__init__(*args, **kwargs)
 
         # If you pass FormHelper constructor a form instance
         # It builds a default layout with all its fields
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-required_form'
-        self.helper.form_method = 'post'
-        self.helper.form_action = 'submit_survey'
-        self.helper.form_tag = False
-
-        # You can dynamically adjust your layout
-        self.helper.add_input(Submit('save', 'Save'))
-
+        self.helper = FormHelper(self)
+        self.fields['reqid'].initial = jobid
+        self.helper.layout = Layout(
+            Field('reqid', jobid.id, css_class='form-control'),
+            Field('partsrequired', css_class='form-control', rows="2"),
+            Field('quantityrequired', css_class='form-control'),
+            Field('increment'),
+            HTML('<br>'),
+            Submit('save', 'Add Part')
+        )
 
     class Meta:
         model = required

@@ -15,14 +15,7 @@ class partslist(models.Model):
     weight = models.IntegerField(blank=True)
 
     def __str__(self):
-        return 'Part : {0} ' \
-               'Description : {1} ' \
-               'Location : {2} ' \
-               'S.O.H : {3}' \
-            .format(self.partnumber,
-                    self.description,
-                    self.location,
-                    self.stockonhand)
+        return self.partnumber
 
 
 class suppliers(models.Model):
@@ -50,4 +43,4 @@ class partComments(models.Model):
     comment = models.TextField()
 
     def __str__(self):
-        return str(self.comment)+str(self.timestamp)
+        return str(self.timestamp.strftime("%d/%m/%Y"))+" - "+str(self.author)+" - "+str(self.comment)

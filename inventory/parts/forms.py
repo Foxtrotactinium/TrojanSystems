@@ -1,7 +1,7 @@
 from django import forms
 from .models import partslist, suppliers, partComments
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import HTML, Layout, Div, Submit, HTML, Hidden, Row, Column, Field
+from crispy_forms.layout import Layout, Div, Submit, HTML, Hidden, Row, Column, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 
 
@@ -67,6 +67,7 @@ class supplier_form(forms.ModelForm):
             Field('phonenumber', css_class='form-control'),
             Field('address', css_class='form-control'),
             Field('customeraccountnumber', css_class='form-control'),
+            HTML('<br>'),
             Submit('save', 'Save')
         )
 
@@ -89,8 +90,9 @@ class part_comment_form(forms.ModelForm):
         self.fields['part'].initial = part
         self.helper.layout = Layout(
             Field('comment', css_class='form-control', rows="2"),
-            Field('author', author),
-            Field('part', part),
+            Field('author', author, type="hidden"),
+            Field('part', part, type="hidden"),
+            HTML('<br>'),
             Submit('addcomment', 'Add Comment')
         )
 

@@ -46,14 +46,10 @@ def part_information(request, id):
         if form2.is_valid():
             form2.save()
             return redirect('inventory')
-        # else:
-        #     print(form2)
-        #     return redirect('inventory')
 
     else:
         form1 = part_form(instance=part)
         form2 = part_comment_form(user=request.user, part=part)
-        print(form2)
         return render(request, 'detail.html', {'partForm': form1,
                                                'suppliers': part_suppliers,
                                                'commentForm': form2,
@@ -82,11 +78,11 @@ def add_supplier(request):
 
         if form.is_valid():
             form.save()
-            return redirect('detail')
+            return redirect('suppliers')
 
     else:
         form = supplier_form()
-        return render(request, 'supplier.html', {'SupplierForm': form})
+        return render(request, 'addsupplier.html', {'SupplierForm': form})
 
 
 def new_part(request):

@@ -25,18 +25,29 @@ def job_information(request, jobid):
                                                  'required': required_instance,
                                                  'jobid': task.jobid})
 
-
-def add_required_part(request, jobid):
-    task = get_object_or_404(jobs, jobid=jobid)
-    required_instance = required.objects.all().filter(reqid=task.pk)
+def add_activity(request):
     if request.method == "POST":
-        form = required_form(request.POST)
+        form = job_form(request.POST)
+
         if form.is_valid():
             form.save()
             return redirect('activities')
 
     else:
-        form = required_form()
+        form = job_form()
+        return render(request, 'addactivity.html', {'activityForm': form})
+
+def add_required_part(request, jobid):
+    task = get_object_or_404(jobs, jobid=jobid)
+    required_instance = required.objects.all().filter(reqid=task.pk)
+    if request.method == "POST":
+        form = required_form(request.POST, reqid=task)
+        if form.is_valid():
+            form.save()
+            return redirect('activities')
+
+    else:
+        form = required_form(request.POST, reqid=task)
         return render(request, 'addrequired.html', {'RequiredPartForm': form,
                                                     'required': required_instance,
                                                     'jobid': task.jobid})
