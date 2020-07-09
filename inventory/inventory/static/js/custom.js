@@ -3,9 +3,9 @@ $(document).ready(function(){
     window.location = $(this).data('href');
     return false;
   });
-  $("button").click(function()
-{
-    alert("The button was clicked.");
-});
+//  $("button").click(function()
+//{
+//    alert("The button was clicked.");
+//});
 });
 
