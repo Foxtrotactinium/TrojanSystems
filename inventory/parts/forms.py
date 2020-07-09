@@ -67,6 +67,7 @@ class supplier_form(forms.ModelForm):
             Field('phonenumber', css_class='form-control'),
             Field('address', css_class='form-control'),
             Field('customeraccountnumber', css_class='form-control'),
+            HTML('<br>'),
             Submit('save', 'Save')
         )
 

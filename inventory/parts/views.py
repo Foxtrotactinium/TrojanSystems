@@ -82,7 +82,7 @@ def add_supplier(request):
 
     else:
         form = supplier_form()
-        return render(request, 'supplier.html', {'SupplierForm': form})
+        return render(request, 'addsupplier.html', {'supplierForm': form})
 
 
 def new_part(request):

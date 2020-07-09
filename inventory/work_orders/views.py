@@ -10,7 +10,7 @@ def activity_list(request):
                                                'tasks': tasks})
 
 
-def add_activity(request, jobid):
+def add_activity(request):
     if request.method == "POST":
         form = job_form(request.POST)
 
