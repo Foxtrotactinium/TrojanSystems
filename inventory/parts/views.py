@@ -39,7 +39,7 @@ def part_information(request, id):
 
     if request.method == "POST":
         form1 = part_form(request.POST, instance=part)
-        form2 = part_comment_form(request.POST, user=request.user, part=part)
+        form2 = part_comment_form(request.POST, initial={'author':request.user, 'part':part})
         if form1.is_valid():
             form1.save()
             return redirect('inventory')
@@ -49,7 +49,7 @@ def part_information(request, id):
 
     else:
         form1 = part_form(instance=part)
-        form2 = part_comment_form(user=request.user, part=part)
+        form2 = part_comment_form(initial={'author':request.user,'part':part})
         return render(request, 'detail.html', {'partForm': form1,
                                                'suppliers': part_suppliers,
                                                'commentForm': form2,
@@ -78,11 +78,11 @@ def add_supplier(request):
 
         if form.is_valid():
             form.save()
-            return redirect('suppliers')
+            return redirect('detail')
 
     else:
         form = supplier_form()
-        return render(request, 'addsupplier.html', {'SupplierForm': form})
+        return render(request, 'supplier.html', {'SupplierForm': form})
 
 
 def new_part(request):

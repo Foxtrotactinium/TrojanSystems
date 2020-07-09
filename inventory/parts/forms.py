@@ -1,7 +1,7 @@
 from django import forms
 from .models import partslist, suppliers, partComments
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit, HTML, Hidden, Row, Column, Field
+from crispy_forms.layout import HTML, Layout, Div, Submit, HTML, Hidden, Row, Column, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 
 
@@ -67,7 +67,6 @@ class supplier_form(forms.ModelForm):
             Field('phonenumber', css_class='form-control'),
             Field('address', css_class='form-control'),
             Field('customeraccountnumber', css_class='form-control'),
-            HTML('<br>'),
             Submit('save', 'Save')
         )
 
@@ -78,21 +77,15 @@ class supplier_form(forms.ModelForm):
 
 class part_comment_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        # self.request = kwargs.pop("request")
-        author = kwargs.pop('user')
-        part = kwargs.pop('part')
         super(part_comment_form, self).__init__(*args, **kwargs)
 
         # If you pass FormHelper constructor a form instance
         # It builds a default layout with all its fields
         self.helper = FormHelper(self)
-        self.fields['author'].initial = author
-        self.fields['part'].initial = part
         self.helper.layout = Layout(
             Field('comment', css_class='form-control', rows="2"),
-            Field('author', author, type="hidden"),
-            Field('part', part, type="hidden"),
-            HTML('<br>'),
+            Field('author', type='hidden'),
+            Field('part', type='hidden'),
             Submit('addcomment', 'Add Comment')
         )
 

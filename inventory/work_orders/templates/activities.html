@@ -1,47 +1,19 @@
 {% extends "base.html" %}
 
-{% load crispy_forms_tags %}
-
 {% block body %}
-<script>
-    function supplierSearch() {
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("searchBar");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("activityTable");
-  tr = table.getElementsByTagName("tr");
-
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-  }
-}
-</script>
+<!--Need to link button-->
+<!--<br>-->
+<!--<div class="container-fluid">-->
+<!--      <a href="{% url 'new' %}" class="btn btn-secondary btn-sm btn-pad" role="button">New Item</a>-->
+<!--</div>-->
 
 <br>
-
-<form class="form-inline my-2 my-lg-0">
-  <input class="form-control mr-sm-2" type="text" id="searchBar" onkeyup="activitySearch()" placeholder="Search" aria-label="Search">
-</form>
-
-<br>
-
 <div class="container-fluid">
-      <a href="{% url 'addactivity' %}" class="btn btn-secondary btn-sm btn-pad" role="button">Add Activity</a>
+      <a href="{% url 'addactivity' %}" class="btn btn-secondary btn-sm btn-pad" role="button">New Item</a>
 </div>
 
 <br>
-
-<table class="table table-hover" id="activityTable">
+<table class="table table-hover">
     <thead>
     <tr>
         <th>Activity</th>

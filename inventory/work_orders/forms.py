@@ -14,6 +14,7 @@ class job_form(forms.ModelForm):
         self.helper.layout = Layout(
             Field('jobid', css_class='form-control'),
             Field('description', css_class='form-control'),
+            HTML('<br>'),
             Submit('save', 'Save')
         )
 
@@ -23,21 +24,19 @@ class job_form(forms.ModelForm):
 
 class required_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        jobid = kwargs.pop('reqid')
         super(required_form, self).__init__(*args, **kwargs)
 
         # If you pass FormHelper constructor a form instance
         # It builds a default layout with all its fields
-        self.helper = FormHelper(self)
-        self.fields['reqid'].initial = jobid
+        self.helper = FormHelper()
         self.helper.layout = Layout(
-            Field('reqid', jobid.id, css_class='form-control'),
-            Field('partsrequired', css_class='form-control', rows="2"),
+            Field('reqid', css_class='form-control'),
+            Field('partsrequired', css_class='form-control'),
             Field('quantityrequired', css_class='form-control'),
-            Field('increment'),
             HTML('<br>'),
-            Submit('save', 'Add Part')
+            Submit('save', 'Save')
         )
+
 
     class Meta:
         model = required
