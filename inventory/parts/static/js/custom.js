@@ -5,3 +5,5 @@
         return false;
       });
     });
+
+    id_partsrequired

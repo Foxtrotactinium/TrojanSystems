@@ -36,7 +36,7 @@ def part_information(request, id):
 
     if request.method == "POST":
         form1 = part_form(request.POST, instance=part)
-        form2 = part_comment_form(request.POST, initial={'author':request.user, 'part':part})
+        form2 = part_comment_form(request.POST, initial={'author': request.user, 'part': part})
         if form1.is_valid():
             form1.save()
             return redirect('inventory')

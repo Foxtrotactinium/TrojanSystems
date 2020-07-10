@@ -87,7 +87,7 @@ class part_comment_form(forms.ModelForm):
             Field('comment', css_class='form-control', rows="2"),
             Field('author', type='hidden'),
             Field('part', type='hidden'),
-            Submit('addcomment', 'Add Comment')
+            Submit('submit', 'Add Comment')
         )
 
     class Meta:
