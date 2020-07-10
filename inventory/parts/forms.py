@@ -1,5 +1,5 @@
 from django import forms
-from .models import partslist, suppliers, partComments
+from .models import PartsList, Suppliers, PartComments
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, Layout, Div, Submit, HTML, Hidden, Row, Column, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
@@ -51,7 +51,7 @@ class part_form(forms.ModelForm):
         )
 
     class Meta:
-        model = partslist
+        model = PartsList
         fields = '__all__'
 
 
@@ -72,7 +72,7 @@ class supplier_form(forms.ModelForm):
         )
 
     class Meta:
-        model = suppliers
+        model = Suppliers
         fields = '__all__'
 
 
@@ -91,5 +91,5 @@ class part_comment_form(forms.ModelForm):
         )
 
     class Meta:
-        model = partComments
+        model = PartComments
         fields = ['comment', 'author', 'part']

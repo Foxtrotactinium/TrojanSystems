@@ -10,12 +10,12 @@
             <form method="POST">
                 <br>
                 {% csrf_token %}
-                {% crispy partForm %}
+                {% crispy partform %}
             </form>
             <br>
             <table class="table table-hover">
             <tbody>
-            {% for comment in comments %}
+            {% for comment in partcomments %}
             <tr>
                 <td>{{ comment }}</td>
             </tr>
@@ -36,8 +36,8 @@
             </tr>
             </thead>
             <tbody>
-            {% for supplier in suppliers %}
-            <tr data-href="{% url 'supplier_information' supplier.partsupplier.id %}">
+            {% for supplier in partsuppliers %}
+            <tr data-href="{% url 'supplier_information' partsupplier.partsupplier.id %}">
                 <td>{{ supplier }}</td>
             </tr>
             {% endfor %}

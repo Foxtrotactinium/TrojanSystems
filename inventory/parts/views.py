@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 from django.contrib import messages
@@ -8,34 +8,31 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 # Create your views here.
 def inventory_list(request):
-    parts = partslist.objects.all()
+    parts = PartsList.objects.all()
     for part in parts:
-        allsuppliers = partsuppliers.objects.all().filter(partnumber=part.id)
-        if allsuppliers.count() > 1:
-            part.supplier = allsuppliers.get_object_or_404(preferred=True)
+        all_suppliers = PartSuppliers.objects.all().filter(partnumber=part.id)
+        if all_suppliers.count() > 1:
+            part.supplier = all_suppliers.get_object_or_404(preferred=True)
 
         else:
-            part.supplier = allsuppliers.first()
+            part.supplier = all_suppliers.first()
 
     context = {
         'parts': parts,
         'header': 'Inventory'
     }
+
     return render(request, 'inventory.html', context)
 
 def supplier_list(request):
-    partsuppliers = suppliers.objects.all()
-
     context = {
         'header': 'Supplier List',
-        'partsuppliers': partsuppliers,
+        'suppliers': Suppliers.objects.all(),
     }
     return render(request, 'suppliers.html', context)
 
 def part_information(request, id):
-    part = partslist.objects.all().filter(pk=id).first()
-    part_suppliers = partsuppliers.objects.all().filter(partnumber=part.id)
-    part_comment = partComments.objects.all().filter(part=part.id)
+    part = PartsList.objects.all().filter(pk=id).first()
 
     if request.method == "POST":
         form1 = part_form(request.POST, instance=part)
@@ -49,28 +46,24 @@ def part_information(request, id):
 
     else:
         form1 = part_form(instance=part)
-        form2 = part_comment_form(initial={'author':request.user,'part':part})
-        return render(request, 'detail.html', {'partForm': form1,
-                                               'suppliers': part_suppliers,
+        form2 = part_comment_form(initial={'author': request.user, 'part': part})
+        return render(request, 'detail.html', {'partform': form1,
+                                               'partsuppliers': PartSuppliers.objects.all().filter(partnumber=part.id),
                                                'commentForm': form2,
-                                               'comments': part_comment,
-                                               'part': part
+                                               'partcomments': PartComments.objects.all().filter(part=part.id),
                                                })
 
 def supplier_information(request, id):
-    partsupplier = suppliers.objects.all().filter(pk=id).first()
-    supplierparts = partsuppliers.objects.all().filter(partsupplier=id)
-
     if request.method == "POST":
-        form = supplier_form(request.POST, instance=partsupplier)
+        form = supplier_form(request.POST, instance=Suppliers.objects.all().filter(pk=id).first())
         if form.is_valid():
             form.save()
             return redirect('suppliers')
 
     else:
-        form = supplier_form(instance=partsupplier)
+        form = supplier_form(instance=Suppliers.objects.all().filter(pk=id).first())
         return render(request, 'supplier.html', {'supplierForm': form,
-                                                 'supplierparts': supplierparts})
+                                                 'supplierparts': PartSuppliers.objects.all().filter(partsupplier=id)})
 
 def add_supplier(request):
     if request.method == "POST":
@@ -78,14 +71,14 @@ def add_supplier(request):
 
         if form.is_valid():
             form.save()
-            return redirect('detail')
+            return redirect('suppliers')
 
     else:
         form = supplier_form()
         return render(request, 'addsupplier.html', {'supplierForm': form})
 
 
-def new_part(request):
+def add_part(request):
     if request.method == "POST":
         form = part_form(request.POST)
 
@@ -95,7 +88,7 @@ def new_part(request):
 
     else:
         form = part_form()
-        return render(request, 'new.html', {'PartForm': form})
+        return render(request, 'addpart.html', {'PartForm': form})
 
 
 def register(request):

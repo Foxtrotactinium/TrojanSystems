@@ -6,5 +6,4 @@ urlpatterns = [
     path('addactivity/', add_activity, name='addactivity'),
     path('<str:jobid>/', job_information, name='workinfo'),
     path('<str:jobid>/addrequired', add_required_part, name='addrequired'),
-    path('addactivity', add_activity, name='addactivity'),
 ]

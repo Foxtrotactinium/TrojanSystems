@@ -1,6 +1,6 @@
 from django.contrib import admin
 from work_orders.models import *
-from .models import partslist, suppliers, partsuppliers, partComments
+from .models import PartsList, Suppliers, PartSuppliers, PartComments
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 
@@ -8,22 +8,22 @@ from import_export.admin import ImportExportModelAdmin
 class partsresource(resources.ModelResource):
 
     class Meta:
-        model = partslist
+        model = PartsList
 
 class supplierresource(resources.ModelResource):
 
     class Meta:
-        model = suppliers
+        model = Suppliers
 
 class partsupplierresource(resources.ModelResource):
 
     class Meta:
-        model = partsuppliers
+        model = PartSuppliers
 
 class partcommentsresource(resources.ModelResource):
 
     class Meta:
-        model = partComments
+        model = PartComments
 
 
 # class partcommentsdmin(admin.ModelAdmin):
@@ -36,11 +36,11 @@ class importparts(ImportExportModelAdmin):
 class jobsresource(resources.ModelResource):
 
     class Meta:
-        model = jobs
+        model = Jobs
 
-admin.site.register(partslist, importparts)
-admin.site.register(jobs)
-admin.site.register(suppliers)
-admin.site.register(partsuppliers)
-admin.site.register(required)
-admin.site.register(partComments)
+admin.site.register(PartsList, importparts)
+admin.site.register(Jobs)
+admin.site.register(Suppliers)
+admin.site.register(PartSuppliers)
+admin.site.register(Required)
+admin.site.register(PartComments)
