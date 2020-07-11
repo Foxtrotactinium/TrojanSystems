@@ -28,5 +28,5 @@ urlpatterns = [
     path("logout/", logout_request, name="logout"),
     path("login/", login_request, name="login"),
     path('tasks/', tasks, name='tasks'),
-    path('tasks/addtask/', add_task, name='add_task')
+    path('tasks/addtask/', add_task, name='addtask')
 ]
