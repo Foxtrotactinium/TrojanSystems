@@ -1,6 +1,7 @@
 from django.db import models
 # from django.contrib.postgres.fields import ArrayField
 from parts.models import PartsList
+from django.contrib.auth.models import User
 
 
 # Create your models here.
@@ -21,6 +22,20 @@ class Required(models.Model):
     def __str__(self):
         return str(self.reqid)+" "+str(self.partsrequired)
 
+
+class ActivityLog(models.Model):
+    activity_name = models.CharField(max_length=50)
+    jobid = models.ForeignKey(Jobs, on_delete=models.PROTECT)
+    partsrequired = models.ForeignKey(PartsList, on_delete=models.PROTECT)
+    increment = models.BooleanField(default=False)
+    quantityrequired = models.IntegerField()
+    quantitycompleted = models.IntegerField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    complete = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.supplier
 # class instruction(models.Model):
 #     job = models.ForeignKey(Jobs, on_delete=models.CASCADE)
 #     pdf = models.FileField(upload_to='pdf')

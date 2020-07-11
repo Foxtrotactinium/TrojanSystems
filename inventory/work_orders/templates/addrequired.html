@@ -9,7 +9,7 @@
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("searchBar");
   filter = input.value.toUpperCase();
-  table = document.getElementById("inventoryTable");
+  table = document.getElementById("partselection");
   tr = table.getElementsByTagName("tr");
 
   // Loop through all table rows, and hide those who don't match the search query
@@ -37,21 +37,19 @@
                 <input class="form-control mr-sm-2" type="text" id="searchBar" onkeyup="inventorySearch()" placeholder="Search" aria-label="Search">
             </form>
             <br>
-            <table class="table table-hover" id="inventoryTable">
+            <table class="table table-hover" id="partselection">
                 <thead>
                 <tr>
                     <th>Part Number</th>
                     <th>Description</th>
-                    <th>Select</th>
 
                 </tr>
                 </thead>
                 <tbody>
                 {% for part in parts %}
-                <tr>
+                <tr data-id="{{ part.id }}">
                     <td>{{ part.partnumber }}</td>
                     <td>{{ part.description }}</td>
-                    <td><button id="{{ part.id }}">Select</button></td>
                 </tr>
                 {% endfor %}
                 </tbody>

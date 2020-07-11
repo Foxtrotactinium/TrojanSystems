@@ -1,9 +1,11 @@
-    $(document).ready(function(){
-      $('table tr').click(function(){
-        window.location = $(this).data('href');
-        print(request)
-        return false;
-      });
-    });
+$(document).ready(function(){
+  $('[data-href]').click(function(){
+    window.location = $(this).data('href');
+    return false;
+  });
 
-    id_partsrequired
+$('[data-id]').click(function(){
+   $("#id_partsrequired").val($(this).data('id'));
+});
+});
+

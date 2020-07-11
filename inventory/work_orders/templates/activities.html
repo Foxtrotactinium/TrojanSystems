@@ -18,7 +18,7 @@
 
     {% for task in tasks %}
 
-    <tr data-href="{% url 'workinfo' task.jobid %}">
+    <tr data-href="{% url 'workinfo' task.id %}">
         <td>{{ task.jobid }}</td>
         <td>{{ task.partsrequired }}</td>
         <td>{{ task.partsproduced }}</td>
