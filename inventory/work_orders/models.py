@@ -35,7 +35,7 @@ class ActivityLog(models.Model):
     complete = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.supplier
+        return str(self.activity_name)+' '+str(self.jobid)+' '+str(self.partsrequired)
 # class instruction(models.Model):
 #     job = models.ForeignKey(Jobs, on_delete=models.CASCADE)
 #     pdf = models.FileField(upload_to='pdf')

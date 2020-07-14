@@ -67,7 +67,27 @@ def add_task(request):
         form = task_form(request.POST)
 
         if form.is_valid():
-            form.save()
+            job = form.cleaned_data['jobid']
+            activity_name = form.cleaned_data['activity_name']
+            if ActivityLog.objects.all().filter(activity_name=activity_name).count()>0:
+                ctx = {}
+                ctx['form_errors'] = "Activity name exists"
+                ctx['taskform'] = task_form()
+                return render(request, 'addtask.html', ctx)
+            required_list = Required.objects.all().filter(reqid=job)
+            for required in required_list:
+                temp = ActivityLog(activity_name=activity_name,
+                                   jobid=job,
+                                   partsrequired=required.partsrequired,
+                                   increment=required.increment,
+                                   quantityrequired=required.quantityrequired,
+                                   quantitycompleted=0,
+                                   user=request.user,
+                                   complete=False,
+                                   )
+                temp.save()
+                print(temp)
+            # form.save()
             return redirect('tasks')
 
     else:

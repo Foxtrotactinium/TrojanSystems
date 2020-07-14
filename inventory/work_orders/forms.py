@@ -4,6 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 
+
 class job_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(job_form, self).__init__(*args, **kwargs)
@@ -22,6 +23,7 @@ class job_form(forms.ModelForm):
         model = Jobs
         fields = '__all__'
 
+
 class required_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(required_form, self).__init__(*args, **kwargs)
@@ -36,7 +38,6 @@ class required_form(forms.ModelForm):
             HTML('<br>'),
             Submit('save', 'Save')
         )
-
 
     class Meta:
         model = Required
@@ -53,17 +54,17 @@ class task_form(forms.ModelForm):
         self.helper.layout = Layout(
             Field('activity_name', css_class='form-control'),
             Field('jobid', css_class='form-control'),
-            Field('partsrequired', css_class='form-control'),
-            Field('increment', css_class='form-control'),
-            Field('quantityrequired', css_class='form-control'),
-            Field('quantitycompleted', css_class='form-control'),
-            Field('timestamp', css_class='form-control'),
-            Field('user', css_class='form-control'),
-            Field('complete', css_class='form-control'),
+            # Field('partsrequired', css_class='form-control'),
+            # Field('increment', css_class='form-control'),
+            # Field('quantityrequired', css_class='form-control'),
+            # Field('quantitycompleted', css_class='form-control'),
+            # Field('timestamp', css_class='form-control'),
+            # Field('user', css_class='form-control'),
+            # Field('complete', css_class='form-control'),
             HTML('<br>'),
             Submit('save', 'Save')
         )
 
     class Meta:
         model = ActivityLog
-        fields = '__all__'
+        fields = ['activity_name', 'jobid']

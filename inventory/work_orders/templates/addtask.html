@@ -11,6 +11,7 @@
                 <br>
                 {% csrf_token %}
                 {% crispy taskform %}
+                <div id='form-errors'>{{ form_errors }}</div>
             </form>
         </div>
     </div>
