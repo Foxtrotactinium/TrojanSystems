@@ -1,46 +1,49 @@
 from .models import *
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import job_form, required_form, task_form
+from .forms import activity_form, required_form, task_form
 
 
 # Create your views here.
 def activity_list(request):
     return render(request, 'activities.html', {'header': 'Activities',
-                                               'tasks': Jobs.objects.all()})
+                                               'activities': Activities.objects.all()})
 
 
 def add_activity(request):
     if request.method == "POST":
-        form = job_form(request.POST)
+        form = activity_form(request.POST)
 
         if form.is_valid():
             form.save()
             return redirect('activities')
 
     else:
-        form = job_form()
+        form = activity_form()
 
-        return render(request, 'addactivity.html', {'jobform': form})
+        return render(request, 'addactivity.html', {'activityform': form})
 
 
-def job_information(request, id):
-    task = get_object_or_404(Jobs, id=id)
+def activity_information(request, id):
+    task = get_object_or_404(Activities, id=id)
+    print(id)
     if request.method == "POST":
-        form = job_form(request.POST, instance=task)
+        form = activity_form(request.POST, instance=task)
         if form.is_valid():
             form.save()
             return redirect('activities')
 
     else:
-        form = job_form(instance=task)
-        return render(request, 'workinfo.html', {'jobform': form,
-                                                 'required': Required.objects.all().filter(reqid=task.pk),
-                                                 'id': task.id})
+        form = activity_form(initial={'activityid': task})
+        return render(request, 'activityinformation.html',
+                      {
+                          'activityform': form,
+                          'activitypartsrequired': ActivityRequiredParts.objects.all().filter(activityid=id),
+                          'id': id
+                      })
 
 
-def add_required_part(request, id):
-    task = get_object_or_404(Jobs, id=id)
-    required_instance = Required.objects.all().filter(reqid=task.pk)
+def add_required_part_to_activity(request, id):
+    required_parts_for_activity = ActivityRequiredParts.objects.all().filter(activityid=id)
     parts = PartsList.objects.all()
     if request.method == "POST":
         form = required_form(request.POST)
@@ -49,51 +52,50 @@ def add_required_part(request, id):
             return redirect('activities')
 
     else:
-        form = required_form(initial={'reqid': task.id})
-        print(id)
+        form = required_form(initial={'activityid': get_object_or_404(ActivityRequiredParts, activityid=id)})
+        form.fields['activityid'].disabled = True
         return render(request, 'addrequired.html', {'requiredpartform': form,
-                                                    'required': required_instance,
+                                                    'activityrequiredparts': required_parts_for_activity,
                                                     'parts': parts,
                                                     })
 
 
 def tasks(request):
     return render(request, 'tasks.html', {'header': 'Tasks',
-                                          'tasks': ActivityLog.objects.all().filter(complete=False)})
+                                          'tasks': Tasks.objects.all().filter(complete=False)})
 
 
 def add_task(request):
     if request.method == "POST":
         form = task_form(request.POST)
-
         if form.is_valid():
-            job = form.cleaned_data['jobid']
-            activity_name = form.cleaned_data['activity_name']
-            if ActivityLog.objects.all().filter(activity_name=activity_name).count()>0:
+            task_name = form.cleaned_data['task_name']
+            activity = form.cleaned_data['activityid']
+
+            if Tasks.objects.all().filter(task_name=task_name).count() > 0:
                 ctx = {}
                 ctx['form_errors'] = "Activity name exists"
                 ctx['taskform'] = task_form()
                 return render(request, 'addtask.html', ctx)
-            required_list = Required.objects.all().filter(reqid=job)
+
+            required_list = ActivityRequiredParts.objects.all().filter(activityid=activity)
             for required in required_list:
-                temp = ActivityLog(activity_name=activity_name,
-                                   jobid=job,
-                                   partsrequired=required.partsrequired,
-                                   increment=required.increment,
-                                   quantityrequired=required.quantityrequired,
-                                   quantitycompleted=0,
-                                   user=request.user,
-                                   complete=False,
-                                   )
+                temp = Tasks(task_name=task_name,
+                             activityid=activity,
+                             partsrequired=required.partsrequired,
+                             increment=required.increment,
+                             quantityrequired=required.quantityrequired,
+                             quantitycompleted=0,
+                             user=request.user,
+                             complete=False,
+                             )
                 temp.save()
                 print(temp)
-            # form.save()
             return redirect('tasks')
-
     else:
         form = task_form()
         return render(request, 'addtask.html', {'taskform': form})
 
-# # use for getting all files in instruction model relating to job from Jobs model
+# # use for getting all files in instruction model relating to job from Activities model
 # some_manual = Manual.objects.get(id=1)
 # some_manual_pdfs = some_manual.manualpdf_set.all()

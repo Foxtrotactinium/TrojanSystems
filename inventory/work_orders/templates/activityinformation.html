@@ -10,18 +10,18 @@
             <form method="POST">
                 <br>
                 {% csrf_token %}
-                {% crispy jobform %}
+                {% crispy activityform %}
             </form>
         </div>
         <div class="col-sm">
             <br>
             <table class="table table-hover">
             <tbody>
-            {% for required_instance in required %}
-            <tr data-href="{% url 'detail' required_instance.partsrequired.id %}">
-                <td>{{ required_instance.partsrequired.partnumber }}</td>
-                <td>{{ required_instance.partsrequired.description }}</td>
-                <td>{{ required_instance.quantityrequired }}</td>
+            {% for required in activitypartsrequired %}
+            <tr data-href="{% url 'detail' required.partsrequired.id %}">
+                <td>{{ required.partsrequired.partnumber }}</td>
+                <td>{{ required.partsrequired.description }}</td>
+                <td>{{ required.quantityrequired }}</td>
             </tr>
             {% endfor %}
             </tbody>

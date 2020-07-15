@@ -36,12 +36,12 @@ class importparts(ImportExportModelAdmin):
 class jobsresource(resources.ModelResource):
 
     class Meta:
-        model = Jobs
+        model = Activities
 
 admin.site.register(PartsList, importparts)
-admin.site.register(Jobs)
+admin.site.register(Activities)
 admin.site.register(Suppliers)
 admin.site.register(PartSuppliers)
-admin.site.register(Required)
+admin.site.register(ActivityRequiredParts)
 admin.site.register(PartComments)
-admin.site.register(ActivityLog)
+admin.site.register(Tasks)

@@ -5,27 +5,27 @@ from django.contrib.auth.models import User
 
 
 # Create your models here.
-class Jobs(models.Model):
-    jobid = models.CharField(max_length=100)
+class Activities(models.Model):
+    activityid = models.CharField(max_length=100)
     description = models.CharField(max_length=200)
 
     def __str__(self):
-        return self.jobid
+        return str(self.activityid)
 
 
-class Required(models.Model):
-    reqid = models.ForeignKey(Jobs, on_delete=models.CASCADE)
+class ActivityRequiredParts(models.Model):
+    activityid = models.ForeignKey(Activities, on_delete=models.CASCADE)
     partsrequired = models.ForeignKey(PartsList, related_name='required_for_jobs', on_delete=models.CASCADE)
     quantityrequired = models.IntegerField(default=1)
-    increment = models.BooleanField(default=False)     # TRUE/FALSE used to represent parts Required/produced
+    increment = models.BooleanField(default=False)     # TRUE/FALSE used to represent parts ActivityRequiredParts/produced
 
     def __str__(self):
-        return str(self.reqid)+" "+str(self.partsrequired)
+        return str(self.activityid) + " " + str(self.partsrequired)
 
 
-class ActivityLog(models.Model):
-    activity_name = models.CharField(max_length=50)
-    jobid = models.ForeignKey(Jobs, on_delete=models.PROTECT)
+class Tasks(models.Model):
+    task_name = models.CharField(max_length=50)
+    activityid = models.ForeignKey(Activities, on_delete=models.PROTECT)
     partsrequired = models.ForeignKey(PartsList, on_delete=models.PROTECT)
     increment = models.BooleanField(default=False)
     quantityrequired = models.IntegerField()
@@ -35,7 +35,7 @@ class ActivityLog(models.Model):
     complete = models.BooleanField(default=False)
 
     def __str__(self):
-        return str(self.activity_name)+' '+str(self.jobid)+' '+str(self.partsrequired)
+        return str(self.task_name) + ' ' + str(self.activityid) + ' ' + str(self.partsrequired)
 # class instruction(models.Model):
-#     job = models.ForeignKey(Jobs, on_delete=models.CASCADE)
+#     job = models.ForeignKey(Activities, on_delete=models.CASCADE)
 #     pdf = models.FileField(upload_to='pdf')
