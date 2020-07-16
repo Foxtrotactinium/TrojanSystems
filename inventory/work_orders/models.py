@@ -32,7 +32,8 @@ class Tasks(models.Model):
 
 
 class WorkCentre(models.Model):
-    task_name = models.CharField(max_length=50)
+    vehicle = models.CharField(max_length=50)
+    task_name = models.ForeignKey(Tasks, on_delete=models.PROTECT)
     activityid = models.ForeignKey(Activities, on_delete=models.PROTECT)
     partsrequired = models.ForeignKey(PartsList, on_delete=models.PROTECT)
     increment = models.BooleanField(default=False)
@@ -41,6 +42,9 @@ class WorkCentre(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     complete = models.BooleanField(default=False)
+    notes = models.TextField()
+
+
 # class instruction(models.Model):
 #     job = models.ForeignKey(Activities, on_delete=models.CASCADE)
 #     pdf = models.FileField(upload_to='pdf')

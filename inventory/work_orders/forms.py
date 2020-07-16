@@ -1,5 +1,5 @@
 from django import forms
-from .models import Activities, ActivityRequiredParts, Tasks
+from .models import Activities, ActivityRequiredParts, Tasks, WorkCentre
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
@@ -68,3 +68,29 @@ class task_form(forms.ModelForm):
     class Meta:
         model = Tasks
         fields = ['task_name', 'activityid']
+
+class work_form(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(work_form, self).__init__(*args, **kwargs)
+
+        # If you pass FormHelper constructor a form instance
+        # It builds a default layout with all its fields
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Field('vehicle', css_class='form-control'),
+            Field('task_name', css_class='form-control'),
+            Field('activityid', css_class='form-control'),
+            Field('partsrequired', css_class='form-control'),
+            Field('increment', css_class='form-control'),
+            Field('quantityrequired', css_class='form-control'),
+            Field('quantitycompleted', css_class='form-control'),
+            Field('user', css_class='form-control'),
+            Field('complete', css_class='form-control'),
+            Field('notes', css_class='form-control'),
+            HTML('<br>'),
+            Submit('save', 'Save')
+        )
+
+    class Meta:
+        model = WorkCentre
+        fields = ['vehicle', 'task_name', 'notes']

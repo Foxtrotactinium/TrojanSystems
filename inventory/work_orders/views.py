@@ -1,7 +1,8 @@
 from .models import *
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import activity_form, required_form, task_form
+from .forms import activity_form, required_form, task_form, work_form
 from django.contrib import messages
+from django.utils import timezone
 
 # Create your views here.
 def activity_list(request):
@@ -41,11 +42,9 @@ def activity_information(request, id):
 
 def add_required_part_to_activity(request, id):
     activity_parts = ActivityRequiredParts.objects.all().filter(activityid=id)
-    print(activity_parts)
     parts = PartsList.objects.all()
     if request.method == "POST":
         form = required_form(request.POST)
-        print(form)
         if form.is_valid():
             form.save()
         return redirect('activities')
@@ -92,6 +91,49 @@ def add_task(request):
     else:
         form = task_form()
         return render(request, 'addtask.html', {'taskform': form})
+
+
+def work_centre_list(request):
+    return render(request, 'workcentre.html', {'header': 'Outstanding Tasks',
+                                               'workcentre': WorkCentre.objects.all().filter(complete=False)})
+
+
+def add_work(request):
+    if request.method == "POST":
+        form = work_form(request.POST)
+        if form.is_valid():
+            vehicle = form.cleaned_data['vehicle']
+            task_name = form.cleaned_data['task_name']
+            print(task_name.task_name)
+            notes = form.cleaned_data['notes']
+            activity = get_object_or_404(Tasks, task_name=task_name.task_name.first())
+            # activity = Tasks.objects.all().filter(task_name=task_name)
+            print(activity)
+
+            if WorkCentre.objects.all().filter(vehicle=vehicle).count() > 0:
+                messages.error(request, "Vehicle already exists")
+                return redirect('addwork')
+
+            required_list = ActivityRequiredParts.objects.all().filter(activityid=activity)
+            for required in required_list:
+                temp = Tasks(vehicle=vehicle,
+                             task_name=task_name,
+                             activityid=activity.activityid,
+                             partsrequired=required.partsrequired,
+                             increment=required.increment,
+                             quantityrequired=required.quantityrequired,
+                             quantitycompleted=0,
+                             timestamp=timezone.now(),
+                             user=request.user,
+                             complete=False,
+                             notes=notes
+                             )
+                temp.save()
+            return redirect('tasks')
+    else:
+        form = work_form()
+        return render(request, 'addwork.html', {'workform': form})
+
 
 # # use for getting all files in instruction model relating to job from Activities model
 # some_manual = Manual.objects.get(id=1)
