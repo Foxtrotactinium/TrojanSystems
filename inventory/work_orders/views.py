@@ -1,7 +1,7 @@
 from .models import *
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import activity_form, required_form, task_form
-
+from django.contrib import messages
 
 # Create your views here.
 def activity_list(request):
@@ -25,7 +25,6 @@ def add_activity(request):
 
 def activity_information(request, id):
     task = get_object_or_404(Activities, id=id)
-    print(id)
     if request.method == "POST":
         form = activity_form(request.POST, instance=task)
         if form.is_valid():
@@ -33,36 +32,37 @@ def activity_information(request, id):
             return redirect('activities')
 
     else:
-        form = activity_form(initial={'activityid': task})
-        return render(request, 'activityinformation.html',
-                      {
-                          'activityform': form,
-                          'activitypartsrequired': ActivityRequiredParts.objects.all().filter(activityid=id),
-                          'id': id
-                      })
+        form = activity_form(instance=task)
+        context = {'activityform': form,
+                   'activitypartsrequired': ActivityRequiredParts.objects.all().filter(activityid=id),
+                   'id': id}
+        return render(request, 'activityinformation.html', context)
 
 
 def add_required_part_to_activity(request, id):
-    required_parts_for_activity = ActivityRequiredParts.objects.all().filter(activityid=id)
+    activity_parts = ActivityRequiredParts.objects.all().filter(activityid=id)
+    print(activity_parts)
     parts = PartsList.objects.all()
     if request.method == "POST":
         form = required_form(request.POST)
+        print(form)
         if form.is_valid():
             form.save()
-            return redirect('activities')
+        return redirect('activities')
 
     else:
-        form = required_form(initial={'activityid': get_object_or_404(ActivityRequiredParts, activityid=id)})
-        form.fields['activityid'].disabled = True
-        return render(request, 'addrequired.html', {'requiredpartform': form,
-                                                    'activityrequiredparts': required_parts_for_activity,
-                                                    'parts': parts,
-                                                    })
+        form = required_form(initial={'activityid': id})
+        # form.fields['activityid'].disabled = True
+        context = {'requiredpartform': form,
+                   'activityrequiredparts': activity_parts,
+                   'parts': parts,
+                   }
+    return render(request, 'addrequired.html', context)
 
 
 def tasks(request):
     return render(request, 'tasks.html', {'header': 'Tasks',
-                                          'tasks': Tasks.objects.all().filter(complete=False)})
+                                          'tasks': Tasks.objects.all()})
 
 
 def add_task(request):
@@ -73,24 +73,21 @@ def add_task(request):
             activity = form.cleaned_data['activityid']
 
             if Tasks.objects.all().filter(task_name=task_name).count() > 0:
-                ctx = {}
-                ctx['form_errors'] = "Activity name exists"
-                ctx['taskform'] = task_form()
-                return render(request, 'addtask.html', ctx)
+                messages.error(request, "Task name exists")
+                return redirect('addtask')
 
             required_list = ActivityRequiredParts.objects.all().filter(activityid=activity)
             for required in required_list:
                 temp = Tasks(task_name=task_name,
                              activityid=activity,
-                             partsrequired=required.partsrequired,
-                             increment=required.increment,
-                             quantityrequired=required.quantityrequired,
-                             quantitycompleted=0,
-                             user=request.user,
+                             # partsrequired=required.partsrequired,
+                             # increment=required.increment,
+                             # quantityrequired=required.quantityrequired,
+                             # quantitycompleted=0,
+                             # user=request.user,
                              complete=False,
                              )
                 temp.save()
-                print(temp)
             return redirect('tasks')
     else:
         form = task_form()

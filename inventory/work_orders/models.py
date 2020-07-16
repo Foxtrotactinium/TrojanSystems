@@ -26,6 +26,14 @@ class ActivityRequiredParts(models.Model):
 class Tasks(models.Model):
     task_name = models.CharField(max_length=50)
     activityid = models.ForeignKey(Activities, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return str(self.task_name) + ' ' + str(self.activityid)
+
+
+class WorkCentre(models.Model):
+    task_name = models.CharField(max_length=50)
+    activityid = models.ForeignKey(Activities, on_delete=models.PROTECT)
     partsrequired = models.ForeignKey(PartsList, on_delete=models.PROTECT)
     increment = models.BooleanField(default=False)
     quantityrequired = models.IntegerField()
@@ -33,9 +41,6 @@ class Tasks(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     complete = models.BooleanField(default=False)
-
-    def __str__(self):
-        return str(self.task_name) + ' ' + str(self.activityid) + ' ' + str(self.partsrequired)
 # class instruction(models.Model):
 #     job = models.ForeignKey(Activities, on_delete=models.CASCADE)
 #     pdf = models.FileField(upload_to='pdf')
