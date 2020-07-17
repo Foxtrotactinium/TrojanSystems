@@ -42,23 +42,15 @@
     <thead>
     <tr>
         <th>Tasks</th>
-
     </tr>
     </thead>
-
     <tbody>
-
     {% for task in tasks %}
-
-    <tr>
+    <tr data-href="{% url 'taskinformation' task.id %}">
         <td>{{ task.task_name }}</td>
-
     </tr>
-
     {% endfor %}
-
     </tbody>
-
 </table>
 
 {% endblock %}

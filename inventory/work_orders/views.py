@@ -25,15 +25,15 @@ def add_activity(request):
 
 
 def activity_information(request, id):
-    task = get_object_or_404(Activities, id=id)
+    activity = get_object_or_404(Activities, id=id)
     if request.method == "POST":
-        form = activity_form(request.POST, instance=task)
+        form = activity_form(request.POST, instance=activity)
         if form.is_valid():
             form.save()
             return redirect('activities')
 
     else:
-        form = activity_form(instance=task)
+        form = activity_form(instance=activity)
         context = {'activityform': form,
                    'activitypartsrequired': ActivityRequiredParts.objects.all().filter(activityid=id),
                    'id': id}
@@ -61,7 +61,7 @@ def add_required_part_to_activity(request, id):
 
 def tasks(request):
     return render(request, 'tasks.html', {'header': 'Tasks',
-                                          'tasks': Tasks.objects.all()})
+                                          'tasks': Tasks.objects.distinct()})
 
 
 def add_task(request):
@@ -71,19 +71,14 @@ def add_task(request):
             task_name = form.cleaned_data['task_name']
             activity = form.cleaned_data['activityid']
 
-            if Tasks.objects.all().filter(task_name=task_name).count() > 0:
+            if Tasks.objects.filter(task_name=task_name).count() > 0:
                 messages.error(request, "Task name exists")
                 return redirect('addtask')
 
-            required_list = ActivityRequiredParts.objects.all().filter(activityid=activity)
+            required_list = ActivityRequiredParts.objects.filter(activityid=activity)
             for required in required_list:
                 temp = Tasks(task_name=task_name,
                              activityid=activity,
-                             # partsrequired=required.partsrequired,
-                             # increment=required.increment,
-                             # quantityrequired=required.quantityrequired,
-                             # quantitycompleted=0,
-                             # user=request.user,
                              complete=False,
                              )
                 temp.save()
@@ -91,6 +86,22 @@ def add_task(request):
     else:
         form = task_form()
         return render(request, 'addtask.html', {'taskform': form})
+
+
+def task_information(request, id):
+    task = get_object_or_404(Tasks, id=id)
+    if request.method == "POST":
+        form = task_form(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('tasks')
+
+    else:
+        form = task_form(instance=task)
+        context = {'taskform': form,
+                   'taskactivities': Tasks.objects.filter(activityid=id),
+                   'id': id}
+        return render(request, 'taskinformation.html', context)
 
 
 def work_centre_list(request):
@@ -104,32 +115,29 @@ def add_work(request):
         if form.is_valid():
             vehicle = form.cleaned_data['vehicle']
             task_name = form.cleaned_data['task_name']
-            print(task_name.task_name)
+            activity = task_name.activityid
             notes = form.cleaned_data['notes']
-            activity = get_object_or_404(Tasks, task_name=task_name.task_name.first())
-            # activity = Tasks.objects.all().filter(task_name=task_name)
-            print(activity)
 
-            if WorkCentre.objects.all().filter(vehicle=vehicle).count() > 0:
+            if WorkCentre.objects.filter(vehicle=vehicle).count() > 0:
                 messages.error(request, "Vehicle already exists")
                 return redirect('addwork')
 
-            required_list = ActivityRequiredParts.objects.all().filter(activityid=activity)
+            required_list = ActivityRequiredParts.objects.filter(activityid=activity)
             for required in required_list:
-                temp = Tasks(vehicle=vehicle,
-                             task_name=task_name,
-                             activityid=activity.activityid,
-                             partsrequired=required.partsrequired,
-                             increment=required.increment,
-                             quantityrequired=required.quantityrequired,
-                             quantitycompleted=0,
-                             timestamp=timezone.now(),
-                             user=request.user,
-                             complete=False,
-                             notes=notes
-                             )
+                temp = WorkCentre(vehicle=vehicle,
+                                  task_name=task_name,
+                                  activityid=activity,
+                                  partsrequired=required.partsrequired,
+                                  increment=required.increment,
+                                  quantityrequired=required.quantityrequired,
+                                  quantitycompleted=0,
+                                  timestamp=timezone.now(),
+                                  user=request.user,
+                                  complete=False,
+                                  notes=notes
+                                  )
                 temp.save()
-            return redirect('tasks')
+            return redirect('workcentre')
     else:
         form = work_form()
         return render(request, 'addwork.html', {'workform': form})
