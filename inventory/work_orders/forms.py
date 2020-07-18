@@ -1,7 +1,7 @@
 from django import forms
-from .models import Activities, ActivityRequiredParts, Tasks, WorkCentre
+from .models import Activities, ActivityRequiredParts, Tasks, WorkCentre,TaskRequiredActivities
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
+from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field,Hidden
 from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 
 
@@ -24,9 +24,9 @@ class activity_form(forms.ModelForm):
         fields = '__all__'
 
 
-class required_form(forms.ModelForm):
+class required_part_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(required_form, self).__init__(*args, **kwargs)
+        super(required_part_form, self).__init__(*args, **kwargs)
 
         # If you pass FormHelper constructor a form instance
         # It builds a default layout with all its fields
@@ -53,7 +53,7 @@ class task_form(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
             Field('task_name', css_class='form-control'),
-            Field('activityid', css_class='form-control'),
+            # Field('activityid', css_class='form-control'),
             # Field('partsrequired', css_class='form-control'),
             # Field('increment', css_class='form-control'),
             # Field('quantityrequired', css_class='form-control'),
@@ -67,7 +67,27 @@ class task_form(forms.ModelForm):
 
     class Meta:
         model = Tasks
-        fields = ['task_name', 'activityid']
+        fields = ['task_name']
+
+
+class required_activity_form(forms.ModelForm):
+    def __init__(self, id, *args, **kwargs):
+        super(required_activity_form, self).__init__(*args, **kwargs)
+
+        # If you pass FormHelper constructor a form instance
+        # It builds a default layout with all its fields
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Hidden('task_name', value=id),
+            Field('activityid', css_class='form-control'),
+            HTML('<br>'),
+            Submit('save', 'Save')
+        )
+
+    class Meta:
+        model = TaskRequiredActivities
+        fields = '__all__'
+
 
 class work_form(forms.ModelForm):
     def __init__(self, *args, **kwargs):

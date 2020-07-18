@@ -25,11 +25,16 @@ class ActivityRequiredParts(models.Model):
 
 class Tasks(models.Model):
     task_name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return str(self.task_name)
+
+class TaskRequiredActivities(models.Model):
+    task_name = models.ForeignKey(Tasks, on_delete=models.PROTECT)
     activityid = models.ForeignKey(Activities, on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.task_name) + ' ' + str(self.activityid)
-
 
 class WorkCentre(models.Model):
     vehicle = models.CharField(max_length=50)

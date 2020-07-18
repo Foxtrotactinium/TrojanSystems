@@ -1,6 +1,6 @@
 from .models import *
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import activity_form, required_form, task_form, work_form
+from .forms import activity_form, required_part_form, task_form, work_form, required_activity_form
 from django.contrib import messages
 from django.utils import timezone
 
@@ -44,13 +44,13 @@ def add_required_part_to_activity(request, id):
     activity_parts = ActivityRequiredParts.objects.all().filter(activityid=id)
     parts = PartsList.objects.all()
     if request.method == "POST":
-        form = required_form(request.POST)
+        form = required_part_form(request.POST)
         if form.is_valid():
             form.save()
         return redirect('activities')
 
     else:
-        form = required_form(initial={'activityid': id})
+        form = required_part_form(initial={'activityid': id})
         # form.fields['activityid'].disabled = True
         context = {'requiredpartform': form,
                    'activityrequiredparts': activity_parts,
@@ -77,10 +77,9 @@ def add_task(request):
 
             required_list = ActivityRequiredParts.objects.filter(activityid=activity)
             for required in required_list:
-                temp = Tasks(task_name=task_name,
-                             activityid=activity,
-                             complete=False,
-                             )
+                temp = TaskRequiredActivities(task_name=task_name,
+                                              activityid=activity,
+                                              )
                 temp.save()
             return redirect('tasks')
     else:
@@ -99,14 +98,41 @@ def task_information(request, id):
     else:
         form = task_form(instance=task)
         context = {'taskform': form,
-                   'taskactivities': Tasks.objects.filter(activityid=id),
+                   'taskactivities': TaskRequiredActivities.objects.filter(task_name=id),
                    'id': id}
         return render(request, 'taskinformation.html', context)
 
 
+def add_required_activity_to_task(request, id):
+    all_activities = Activities.objects.all()
+    task_activities = TaskRequiredActivities.objects.all().filter(task_name=id)
+    if request.method == "POST":
+        form = required_activity_form(request.POST)
+        print(form.is_valid())
+        if form.is_valid():
+            print(form)
+            form.save()
+        return redirect('tasks')
+
+    else:
+        form = required_activity_form(id)
+        form.fields['task_name'].readonly = True
+        # form.fields['task_name'].value = id
+        context = {'requiredactivityform': form,
+                   'taskrequiredactivity': task_activities,
+                   'allactivities': all_activities,
+                   }
+    return render(request, 'addrequiredactivity.html', context)
+
+
+def tasks(request):
+    return render(request, 'tasks.html', {'header': 'Tasks',
+                                          'tasks': Tasks.objects.all()})
+
+
 def work_centre_list(request):
     return render(request, 'workcentre.html', {'header': 'Outstanding Tasks',
-                                               'workcentre': WorkCentre.objects.all().filter(complete=False)})
+                                               'workcentre': WorkCentre.objects.filter(complete=False).distinct()})
 
 
 def add_work(request):
