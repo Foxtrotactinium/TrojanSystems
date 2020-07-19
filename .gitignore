@@ -181,3 +181,8 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+.idea/misc.xml
+
+.idea/TrojanSystems.iml
+venv/Scripts/activate
+venv/pyvenv.cfg

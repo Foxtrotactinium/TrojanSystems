@@ -71,14 +71,14 @@ class task_form(forms.ModelForm):
 
 
 class required_activity_form(forms.ModelForm):
-    def __init__(self, id, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(required_activity_form, self).__init__(*args, **kwargs)
 
         # If you pass FormHelper constructor a form instance
         # It builds a default layout with all its fields
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Hidden('task_name', value=id),
+            Field('task_name', type="hidden"),
             Field('activityid', css_class='form-control'),
             HTML('<br>'),
             Submit('save', 'Save')

@@ -115,8 +115,8 @@ def add_required_activity_to_task(request, id):
         return redirect('tasks')
 
     else:
-        form = required_activity_form(id)
-        form.fields['task_name'].readonly = True
+        form = required_activity_form(initial={'task_name': id})
+        # form.fields['task_name'].readonly = True
         # form.fields['task_name'].value = id
         context = {'requiredactivityform': form,
                    'taskrequiredactivity': task_activities,
