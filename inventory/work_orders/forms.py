@@ -32,7 +32,7 @@ class required_part_form(forms.ModelForm):
         # It builds a default layout with all its fields
         self.helper = FormHelper()
         self.helper.layout = Layout(
-            Field('activityid', css_class='form-control'),
+            Field('activityid', type='hidden'),
             Field('partsrequired', css_class='form-control'),
             Field('quantityrequired', css_class='form-control'),
             HTML('<br>'),
@@ -53,15 +53,6 @@ class task_form(forms.ModelForm):
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
             Field('task_name', css_class='form-control'),
-            # Field('activityid', css_class='form-control'),
-            # Field('partsrequired', css_class='form-control'),
-            # Field('increment', css_class='form-control'),
-            # Field('quantityrequired', css_class='form-control'),
-            # Field('quantitycompleted', css_class='form-control'),
-            # Field('timestamp', css_class='form-control'),
-            # Field('user', css_class='form-control'),
-            # Field('complete', css_class='form-control'),
-            HTML('<br>'),
             Submit('save', 'Save')
         )
 
