@@ -67,21 +67,25 @@ def tasks(request):
 def add_task(request):
     if request.method == "POST":
         form = task_form(request.POST)
+
         if form.is_valid():
-            task_name = form.cleaned_data['task_name']
-            activity = form.cleaned_data['activityid']
-
-            if Tasks.objects.filter(task_name=task_name).count() > 0:
-                messages.error(request, "Task name exists")
-                return redirect('addtask')
-
-            required_list = ActivityRequiredParts.objects.filter(activityid=activity)
-            for required in required_list:
-                temp = TaskRequiredActivities(task_name=task_name,
-                                              activityid=activity,
-                                              )
-                temp.save()
+            form.save()
             return redirect('tasks')
+        # if form.is_valid():
+        #     task_name = form.cleaned_data['task_name']
+        #     activity = form.cleaned_data['activityid']
+        #
+        #     if Tasks.objects.filter(task_name=task_name).count() > 0:
+        #         messages.error(request, "Task name exists")
+        #         return redirect('addtask')
+        #
+        #     required_list = ActivityRequiredParts.objects.filter(activityid=activity)
+        #     for required in required_list:
+        #         temp = TaskRequiredActivities(task_name=task_name,
+        #                                       activityid=activity,
+        #                                       )
+        #         temp.save()
+        #     return redirect('tasks')
     else:
         form = task_form()
         return render(request, 'addtask.html', {'taskform': form})
@@ -105,7 +109,7 @@ def task_information(request, id):
 
 def add_required_activity_to_task(request, id):
     all_activities = Activities.objects.all()
-    task_activities = TaskRequiredActivities.objects.all().filter(task_name=id)
+    task_activities = TaskRequiredActivities.objects.filter(task_name=id)
     if request.method == "POST":
         form = required_activity_form(request.POST)
         print(form.is_valid())
@@ -131,8 +135,8 @@ def tasks(request):
 
 
 def work_centre_list(request):
-    return render(request, 'workcentre.html', {'header': 'Outstanding Tasks',
-                                               'workcentre': WorkCentre.objects.filter(complete=False).distinct()})
+    return render(request, 'workcentre.html', {'header': 'Outstanding Jobs',
+                                               'workcentre': WorkCentre.objects.values_list('vehicle', flat=True).distinct()})
 
 
 def add_work(request):
@@ -141,7 +145,7 @@ def add_work(request):
         if form.is_valid():
             vehicle = form.cleaned_data['vehicle']
             task_name = form.cleaned_data['task_name']
-            activity = task_name.activityid
+            activity = get_object_or_404(TaskRequiredActivities,task_name=task_name).activityid
             notes = form.cleaned_data['notes']
 
             if WorkCentre.objects.filter(vehicle=vehicle).count() > 0:
@@ -167,6 +171,14 @@ def add_work(request):
     else:
         form = work_form()
         return render(request, 'addwork.html', {'workform': form})
+
+
+def work_information(request, vehicle):
+    tasks = WorkCentre.objects.filter(vehicle=vehicle).filter(complete=False).values_list('task_name', flat=True).distinct()
+    print(tasks)
+    return render(request, 'workcentretasks.html', {'header': 'Outstanding Tasks',
+                                                    'workcentretasks': tasks})
+
 
 
 # # use for getting all files in instruction model relating to job from Activities model
