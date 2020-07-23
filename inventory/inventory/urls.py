@@ -16,7 +16,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from parts.views import register, logout_request, login_request, supplier_list, supplier_information
-from work_orders.views import tasks, add_task, work_centre_list, add_work, task_information, add_required_activity_to_task, work_information, work_task_information
+from work_orders.views import tasks, add_task, work_centre_list, add_work, task_information,\
+    add_required_activity_to_task, work_information, work_task_information, work_task_activity_information
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -34,5 +35,7 @@ urlpatterns = [
     path('workcentre/', work_centre_list, name='workcentre'),
     path('workcentre/addworkcentre/', add_work, name='addwork'),
     path('workcentre/<str:vehicle>/', work_information, name='workcentretasks'),
-    path('workcentre/<str:vehicle>/<str:task_name>', work_task_information, name='workcentretasksactivities')
+    path('workcentre/<str:vehicle>/<str:task>', work_task_information, name='workcentretasksactivities'),
+    path('workcentre/<str:vehicle>/<str:task>/<str:activity>', work_task_activity_information, name='workcentretaskactivityparts')
+
 ]

@@ -144,29 +144,36 @@ def add_work(request):
         form = work_form(request.POST)
         if form.is_valid():
             vehicle = form.cleaned_data['vehicle']
-            task_name = form.cleaned_data['task_name']
-            activity = get_object_or_404(TaskRequiredActivities,task_name=task_name).activityid
-            notes = form.cleaned_data['notes']
 
             if WorkCentre.objects.filter(vehicle=vehicle).count() > 0:
                 messages.error(request, "Vehicle already exists")
                 return redirect('addwork')
 
-            required_list = ActivityRequiredParts.objects.filter(activityid=activity)
-            for required in required_list:
-                temp = WorkCentre(vehicle=vehicle,
-                                  task_name=task_name,
-                                  activityid=activity,
-                                  partsrequired=required.partsrequired,
-                                  increment=required.increment,
-                                  quantityrequired=required.quantityrequired,
-                                  quantitycompleted=0,
-                                  timestamp=timezone.now(),
-                                  user=request.user,
-                                  complete=False,
-                                  notes=notes
-                                  )
-                temp.save()
+            task_name = form.cleaned_data['task_name']
+            notes = form.cleaned_data['notes']
+
+            # activity = get_object_or_404(TaskRequiredActivities, task_name=task_name).activityid
+
+            task_activity_list = TaskRequiredActivities.objects.filter(task_name=task_name)
+
+            for activity in task_activity_list:
+
+                required_list = ActivityRequiredParts.objects.filter(activityid=activity.activityid)
+                for required in required_list:
+                    temp = WorkCentre(vehicle=vehicle,
+                                      task_name=task_name,
+                                      activityid=activity.activityid,
+                                      partsrequired=required.partsrequired,
+                                      increment=required.increment,
+                                      quantityrequired=required.quantityrequired,
+                                      quantitycompleted=0,
+                                      timestamp=timezone.now(),
+                                      user=request.user,
+                                      complete=False,
+                                      notes=notes
+                                      )
+                    temp.save()
+
             return redirect('workcentre')
     else:
         form = work_form()
@@ -176,21 +183,27 @@ def add_work(request):
 def work_information(request, vehicle):
     tasks = WorkCentre.objects.filter(vehicle=vehicle).filter(complete=False).values_list('task_name__task_name', flat=True).distinct()
     return render(request, 'workcentretasks.html', {'header': 'Outstanding Tasks',
+                                                    'vehicle': vehicle,
                                                     'workcentretasks': tasks})
 
 
-def work_task_information(request, vehicle, task_name):
+def work_task_information(request, vehicle, task):
     activities = WorkCentre.objects.filter(vehicle=vehicle).filter(complete=False).values_list('activityid__activityid', flat=True).distinct()
-    task = WorkCentre.objects.filter(vehicle=vehicle).filter(complete=False).values_list('task_name__task_name',flat=True).distinct()
     return render(request, 'workcentretasksactivities.html', {'header': 'Kits',
                                                               'taskactivities': activities,
                                                               'vehicle':vehicle,
-                                                              'task_name':task})
+                                                              'task':task})
 
-# def work_task_activity_information(request, vehicle):
-#     activities = WorkCentre.objects.filter(vehicle=vehicle).filter(complete=False).values_list('activityid__activityid', flat=True).distinct()
-#     return render(request, 'workcentretasks.html', {'header': 'Kits',
-#                                                     'workcentretasks': activities})
+def work_task_activity_information(request, vehicle, task, activity):
+    # needed_activities = Activities.objects.filter(activityid=activity)
+    needed_activities = get_object_or_404(Activities,activityid=activity)
+    parts = WorkCentre.objects.filter(vehicle=vehicle).filter(complete=False).filter(
+        activityid=needed_activities)
+    return render(request, 'workcentretaskactivityparts.html', {'header': 'Kits',
+                                                                'vehicle':vehicle,
+                                                                'task':task,
+                                                                'activity':activity,
+                                                                'parts': parts})
 
 # # use for getting all files in instruction model relating to job from Activities model
 # some_manual = Manual.objects.get(id=1)
