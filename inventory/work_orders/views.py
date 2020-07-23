@@ -174,12 +174,23 @@ def add_work(request):
 
 
 def work_information(request, vehicle):
-    tasks = WorkCentre.objects.filter(vehicle=vehicle).filter(complete=False).values_list('task_name', flat=True).distinct()
-    print(tasks)
+    tasks = WorkCentre.objects.filter(vehicle=vehicle).filter(complete=False).values_list('task_name__task_name', flat=True).distinct()
     return render(request, 'workcentretasks.html', {'header': 'Outstanding Tasks',
                                                     'workcentretasks': tasks})
 
 
+def work_task_information(request, vehicle, task_name):
+    activities = WorkCentre.objects.filter(vehicle=vehicle).filter(complete=False).values_list('activityid__activityid', flat=True).distinct()
+    task = WorkCentre.objects.filter(vehicle=vehicle).filter(complete=False).values_list('task_name__task_name',flat=True).distinct()
+    return render(request, 'workcentretasksactivities.html', {'header': 'Kits',
+                                                              'taskactivities': activities,
+                                                              'vehicle':vehicle,
+                                                              'task_name':task})
+
+# def work_task_activity_information(request, vehicle):
+#     activities = WorkCentre.objects.filter(vehicle=vehicle).filter(complete=False).values_list('activityid__activityid', flat=True).distinct()
+#     return render(request, 'workcentretasks.html', {'header': 'Kits',
+#                                                     'workcentretasks': activities})
 
 # # use for getting all files in instruction model relating to job from Activities model
 # some_manual = Manual.objects.get(id=1)

@@ -2,12 +2,12 @@
 {% load static %}
 {% block body %}
 <script>
-    function workcentretasksearch() {
+    function workcentretaskactivitysearch() {
   // Declare variables
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("searchBar");
   filter = input.value.toUpperCase();
-  table = document.getElementById("workcentretasktable");
+  table = document.getElementById("workcentretaskactivitytable");
   tr = table.getElementsByTagName("tr");
 
   // Loop through all table rows, and hide those who don't match the search query
@@ -27,25 +27,25 @@
 
 <br>
 <form class="form-inline my-2 my-lg-0">
-  <input class="form-control mr-sm-2" type="text" id="searchBar" onkeyup="workcentretasksearch()" placeholder="Search" aria-label="Search">
+  <input class="form-control mr-sm-2" type="text" id="searchBar" onkeyup="workcentretaskactivitysearch()" placeholder="Search" aria-label="Search">
 </form>
 
 <br>
 
-<table class="table table-hover" id="workcentretasktable">
+<table class="table table-hover" id="workcentretaskactivitytable">
     <thead>
     <tr>
-        <th>Configuration</th>
+        <th>Activities</th>
 
     </tr>
     </thead>
 
     <tbody>
 
-    {% for task in workcentretasks %}
+    {% for activity in taskactivities %}
 
-    <tr data-href="{% url 'workcentretasksactivities' vehicle task %}">
-        <td>{{ task }}</td>
+    <tr>
+        <td>{{ activity }}</td>
 
     </tr>
 
